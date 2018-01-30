@@ -1,16 +1,20 @@
 from django.db import models
 
-
 class User(models.Model):
+    name = models.CharField(max_length=100)
 
 
-class Product(model.Models):
+class Product(models.Model):
+    name = models.CharField(max_length=100)
 
 
-class Transaction(model.Models):
+class Transaction(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class Deposit(model.Models):
+class Deposit(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class Restock(model.Models):
+class Restock(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
