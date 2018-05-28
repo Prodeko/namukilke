@@ -1,3 +1,9 @@
 <!-- This is the page for buying stuff -->
 
 Buy moar stuff!
+
+<ul>
+{% for product in product_list %}
+	<li> {{ product.name }} </li>
+{% endfor %}
+</ul>
