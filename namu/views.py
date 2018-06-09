@@ -1,20 +1,21 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.http import HttpResponse
-
 from .models import User, Product
 
 
 """Render a list of users for selection"""
+
+
 class Index(ListView):
     model = User
     template_name = 'namu/index.html'
 
 
-"""This page might not be needed"""
-def user(request):
-    return HttpResponse("Hello user!")
+"""This page might not be needed"""  # <-- this is correct
+# def User(ListView):
+#    template_name = 'namu/user.html'
+
+"""Display information about user & allow to purchase items"""
 
 
 class Buy(ListView):
@@ -22,6 +23,9 @@ class Buy(ListView):
     template_name = 'namu/buy.html'
 
 
-class Deposit(DetailView):
+"""Let user make deposit. Might need to be detailview?"""
+
+
+class Deposit(ListView):
     model = User
     template_name = 'namu/deposit.html'
