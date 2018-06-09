@@ -1,14 +1,21 @@
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from .models import User, Product
+from django.shortcuts import redirect
 
+
+def redirectToBuy(request, user_id):
+	return redirect("./buy")
+
+def redirectToIndex(request):
+	return redirect("../")
 
 """Render a list of users for selection"""
-
 
 class Index(ListView):
     model = User
     template_name = 'namu/index.html'
+
 
 
 """This page might not be needed"""  # <-- this is correct
