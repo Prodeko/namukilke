@@ -24,6 +24,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     picture = models.URLField()
 
+    def __str__(self):
+        return self.name
+
 
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
