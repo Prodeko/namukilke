@@ -1,9 +1,27 @@
 <!-- This is the page for buying stuff -->
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
 
-Buy moar stuff!
+<br>
+
+Logged in as {{ user.name }}
+<br>
+Account balance: To be calculated
+
+<h3>Selection</h3>
 
 <ul>
 {% for product in product_list %}
-	<li> {{ product.name }} </li>
+	<li>
+        {{ product.name }} -- Price {{ product.price }}
+        <form action={% url "buy" user.id %} method="post">
+            {% csrf_token %}
+            <input name="product_id" type="hidden" value="{{ product.id }}">
+            <input type="submit" value="Buy">
+        </form>
+	</li>
 {% endfor %}
 </ul>
