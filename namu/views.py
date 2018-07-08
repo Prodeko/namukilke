@@ -30,12 +30,22 @@ class Buy(ListView):
 
     def post(self, *args, **kwargs):
         """Buy a given product"""
-        u = User.objects.get(pk=self.kwargs['user_id'])
-        p = Product.objects.get(pk=self.request.POST['product_id'])
-        t = Transaction(product=p, user=u, price=p.price)
-        t.save()
-        # TODO: check that purchase is indeed succesful (enough funds, etc)
-        messages.success(self.request, 'Success - ' + p.name + ' bought!')
+        try:
+            u = User.objects.get(pk=self.kwargs['user_id'])
+        except User.DoesNotExist:
+            raise Http404('Account does not exist')
+        try:
+            p = Product.objects.get(pk=self.request.POST['product_id'])
+        except Product.DoesNotExist:
+            raise Http404('Product does not exist')
+
+        bal = self.get_balance()
+        if bal >= p.price:
+            t = Transaction(product=p, user=u, price=p.price)
+            t.save()
+            messages.success(self.request, 'Success - ' + p.name + ' bought!')
+        else:
+            messages.error(self.request, 'Error - not enough funds!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
     def get_balance(self, *args, **kwargs):
@@ -54,8 +64,10 @@ class Buy(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
-        # TODO: return 404 if user doesn't exist
-        u = User.objects.get(pk=self.kwargs['user_id'])
+        try:
+            u = User.objects.get(pk=self.kwargs['user_id'])
+        except User.DoesNotExist:
+            raise Http404('Account does not exist')
         balance = self.get_balance()
         context['user'] = u
         context['balance'] = balance
