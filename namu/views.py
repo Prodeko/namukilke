@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from .models import User, Product, Transaction
+from .models import User, Product, Transaction, Deposit
+from django.db.models import Sum
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
@@ -36,16 +37,25 @@ class Buy(ListView):
         messages.success(self.request, 'Success - ' + p.name + ' bought!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
+    def get_balance(self, *args, **kwargs):
+        """ Calculate available balance """
+        u = User.objects.get(pk=self.kwargs['user_id'])
+        transactions = Transaction.objects.filter(user=u).aggregate(sum=Sum('price'))
+        deposits = Deposit.objects.filter(user=u).aggregate(sum=Sum('amount'))
+        # TODO: handle calculation in situation when either query returns null
+        balance = deposits['sum'] - transactions['sum']
+        return balance
+
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
         u = User.objects.get(pk=self.kwargs['user_id'])
-        # TODO: query and calculate fund the user has available
+        balance = self.get_balance()
         context['user'] = u
-
+        context['balance'] = balance
         return context
 
 
-class Deposit(ListView):
+class Topup(ListView):
     """Let user make deposit. Might need to be detailview?"""
     model = User
-    template_name = 'namu/deposit.html'
+    template_name = 'namu/topup.html'

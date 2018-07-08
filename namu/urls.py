@@ -7,5 +7,5 @@ urlpatterns = [
     path('id/', views.redirect_to_index, name='redirectToIndex'),
     path('id/<int:user_id>/', views.redirect_to_buy, name='redirectToBuy'),
     path('id/<int:user_id>/buy', views.Buy.as_view(), name='buy'),
-    path('id/<int:user_id>/deposit', views.Deposit.as_view(), name='deposit'),
+    path('id/<int:user_id>/topup', views.Topup.as_view(), name='topup'),
 ]
