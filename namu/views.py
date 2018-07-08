@@ -1,6 +1,7 @@
 from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 from .models import User, Product, Transaction, Deposit
 from django.db.models import Sum
 from django.shortcuts import redirect
@@ -21,6 +22,20 @@ class Index(ListView):
     """Render a list of users for selection"""
     model = User
     template_name = 'namu/index.html'
+
+
+class UserCreate(CreateView):
+    model = User
+    fields = ['name']
+    # TODO: form validation & redirect to the correct buy page with the new user id
+    # How to get the new user id? If difficult, use a simple DetailView instead with get & post methods
+
+
+class Products(ListView):
+    """ List product details & sales numbers. A nice-to-have feature.
+        Additions and modifications through django admin or separate log-in to prevent tampering"""
+    model = Product
+    template_name = 'namu/products.html'
 
 
 class Buy(ListView):
