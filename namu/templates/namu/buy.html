@@ -9,7 +9,10 @@
 
 Logged in as {{ user.name }}
 <br>
-Account balance: To be calculated
+Account balance: {{ balance }}
+<br>
+
+<a href={% url "index" %}>Change account</a>
 
 <h3>Selection</h3>
 
