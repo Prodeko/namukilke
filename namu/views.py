@@ -1,3 +1,4 @@
+from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from .models import User, Product, Transaction, Deposit
@@ -40,14 +41,20 @@ class Buy(ListView):
     def get_balance(self, *args, **kwargs):
         """ Calculate available balance """
         u = User.objects.get(pk=self.kwargs['user_id'])
-        transactions = Transaction.objects.filter(user=u).aggregate(sum=Sum('price'))
-        deposits = Deposit.objects.filter(user=u).aggregate(sum=Sum('amount'))
-        # TODO: handle calculation in situation when either query returns null
-        balance = deposits['sum'] - transactions['sum']
+        t_sum = Decimal(0.00)
+        d_sum = Decimal(0.00)
+        if Transaction.objects.filter(user=u).exists():
+            t = Transaction.objects.filter(user=u).aggregate(sum=Sum('price'))
+            t_sum = t['sum']
+        if Deposit.objects.filter(user=u).exists():
+            d = Deposit.objects.filter(user=u).aggregate(sum=Sum('amount'))
+            d_sum = d['sum']
+        balance = d_sum - t_sum
         return balance
 
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
+        # TODO: return 404 if user doesn't exist
         u = User.objects.get(pk=self.kwargs['user_id'])
         balance = self.get_balance()
         context['user'] = u
