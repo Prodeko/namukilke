@@ -24,11 +24,10 @@ class Index(ListView):
     template_name = 'namu/index.html'
 
 
+# TODO: form validation: throw error if name > 100 char & warning if name is not unique
 class UserCreate(CreateView):
     model = User
     fields = ['name']
-    # TODO: form validation & redirect to the correct buy page with the new user id
-    # How to get the new user id? If difficult, use a simple DetailView instead with get & post methods
 
 
 class Products(ListView):

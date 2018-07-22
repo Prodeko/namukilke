@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class User(models.Model):
@@ -6,6 +7,9 @@ class User(models.Model):
     
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('buy', kwargs={'user_id': self.pk})
 
 
 class Product(models.Model):
