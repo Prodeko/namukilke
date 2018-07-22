@@ -1,9 +1,4 @@
 <!-- This is the page for increasing user account balance -->
-
-Money money moneyyy, MONEYYY!
-
-<br>
-
 {% if messages %}
     {% for message in messages %}
         {{ message }}
@@ -12,12 +7,32 @@ Money money moneyyy, MONEYYY!
 
 <br>
 
-Logged in as {{ user.name }}
+Logged in as: {{ user.name }}
 <br>
 Account balance: {{ user.account_balance }}
 <br>
-
+<a href={% url "buy" user.id %}>Buy snacks</a>
+<br>
 <a href={% url "index" %}>Change account</a>
 
 <h3>Add funds to your account</h3>
+
+<form action={% url "topup" user.id %} method="post">
+    {% csrf_token %}
+    <label for="amount">Amount: </label>
+    <input name="amount" type="number" value="0.00"> <br>
+    <input name="payment_method" type="radio" value="c" checked> Cash <br>
+    <input name="payment_method" type="radio" value="m"> MobilePay <br>
+    <input type="submit" value="Deposit">
+</form>
+
+
+{% for unit in cash_units %}
+<ul>
+    <li>
+        {{ unit }}
+    </li>
+</ul>
+{% endfor %}
+
 

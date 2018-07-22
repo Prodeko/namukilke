@@ -53,7 +53,7 @@ class Buy(ListView):
         except Product.DoesNotExist:
             raise Http404('Product does not exist')
 
-        bal = self.get_balance()
+        bal = u.account_balance()
         if bal >= p.price:
             t = Transaction(product=p, user=u, price=p.price)
             t.save()
@@ -66,10 +66,10 @@ class Buy(ListView):
         context = super(Buy, self).get_context_data(**kwargs)
         try:
             u = User.objects.get(pk=self.kwargs['user_id'])
-            context['user'] = u
-            context['balance'] = u.account_balance()
         except User.DoesNotExist:
             raise Http404('Account does not exist')
+        context['user'] = u
+        context['balance'] = u.account_balance()
         return context
 
 
@@ -83,5 +83,12 @@ class Topup(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(Topup, self).get_context_data(**kwargs)
         context['account_balance'] = self.get_object().account_balance()
+        context['cash_units'] = [50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05]
         return context
 
+    def post(self, *args, **kwargs):
+        u = self.get_object()
+        d = Deposit(user=u, amount=self.request.POST['amount'], payment_method=self.request.POST['payment_method'])
+        d.save()
+        messages.success(self.request, 'Success - ' + d.amount + ' euros added to your account!')
+        return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))

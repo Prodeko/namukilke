@@ -7,11 +7,12 @@
 
 <br>
 
-Logged in as {{ user.name }}
+Logged in as: {{ user.name }}
 <br>
 Account balance: {{ balance }}
 <br>
-
+<a href={% url "topup" user.id %}>Add more funds</a>
+<br>
 <a href={% url "index" %}>Change account</a>
 
 <h3>Selection</h3>
