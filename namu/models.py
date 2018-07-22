@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models import Sum
+from decimal import *
 
 
 class User(models.Model):
@@ -9,7 +11,19 @@ class User(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('buy', kwargs={'user_id': self.pk})
+        return reverse('topup', kwargs={'user_id': self.pk})
+
+    def account_balance(self):
+        t_sum = Decimal(0.00)
+        d_sum = Decimal(0.00)
+        if Transaction.objects.filter(user=self).exists():
+            t = Transaction.objects.filter(user=self).aggregate(sum=Sum('price'))
+            t_sum = t['sum']
+        if Deposit.objects.filter(user=self).exists():
+            d = Deposit.objects.filter(user=self).aggregate(sum=Sum('amount'))
+            d_sum = d['sum']
+        balance = d_sum - t_sum
+        return balance
 
 
 class Product(models.Model):

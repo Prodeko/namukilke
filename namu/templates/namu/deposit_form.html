@@ -1,0 +1,23 @@
+<!-- This is the page for increasing user account balance -->
+
+Money money moneyyy, MONEYYY!
+
+<br>
+
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
+
+<br>
+
+Logged in as {{ user.name }}
+<br>
+Account balance: {{ user.account_balance }}
+<br>
+
+<a href={% url "index" %}>Change account</a>
+
+<h3>Add funds to your account</h3>
+

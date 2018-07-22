@@ -62,33 +62,26 @@ class Buy(ListView):
             messages.error(self.request, 'Error - not enough funds!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
-    def get_balance(self, *args, **kwargs):
-        """ Calculate available balance """
-        u = User.objects.get(pk=self.kwargs['user_id'])
-        t_sum = Decimal(0.00)
-        d_sum = Decimal(0.00)
-        if Transaction.objects.filter(user=u).exists():
-            t = Transaction.objects.filter(user=u).aggregate(sum=Sum('price'))
-            t_sum = t['sum']
-        if Deposit.objects.filter(user=u).exists():
-            d = Deposit.objects.filter(user=u).aggregate(sum=Sum('amount'))
-            d_sum = d['sum']
-        balance = d_sum - t_sum
-        return balance
-
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
         try:
             u = User.objects.get(pk=self.kwargs['user_id'])
+            context['user'] = u
+            context['balance'] = u.account_balance()
         except User.DoesNotExist:
             raise Http404('Account does not exist')
-        balance = self.get_balance()
-        context['user'] = u
-        context['balance'] = balance
         return context
 
 
-class Topup(ListView):
+class Topup(DetailView):
     """Let user make deposit. Might need to be detailview?"""
     model = User
-    template_name = 'namu/topup.html'
+    template_name = 'namu/deposit_form.html'
+    context_object_name = 'user'
+    pk_url_kwarg = 'user_id'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(Topup, self).get_context_data(**kwargs)
+        context['account_balance'] = self.get_object().account_balance()
+        return context
+
