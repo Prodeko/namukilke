@@ -6,7 +6,7 @@ from decimal import *
 
 class User(models.Model):
     name = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return self.name
 
@@ -14,15 +14,11 @@ class User(models.Model):
         return reverse('topup', kwargs={'user_id': self.pk})
 
     def account_balance(self):
-        t_sum = Decimal(0.00)
-        d_sum = Decimal(0.00)
-        if Transaction.objects.filter(user=self).exists():
-            t = Transaction.objects.filter(user=self).aggregate(sum=Sum('price'))
-            t_sum = t['sum']
-        if Deposit.objects.filter(user=self).exists():
-            d = Deposit.objects.filter(user=self).aggregate(sum=Sum('amount'))
-            d_sum = d['sum']
-        balance = d_sum - t_sum
+        t = Transaction.objects.filter(user=self).aggregate(sum=Sum('price'))
+        t_sum = t['sum'] or Decimal(0.00)
+        d = Deposit.objects.filter(user=self).aggregate(sum=Sum('amount'))
+        d_sum = d['sum'] or Decimal(0.00)
+        balance = round(d_sum - t_sum, 2)
         return balance
 
 
@@ -44,6 +40,13 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def inventory_level(self):
+        t_sum = Transaction.objects.filter(product=self).count()
+        r = Restock.objects.filter(product=self).aggregate(sum=Sum('quantity'))
+        r_sum = r['sum'] or 0
+        inv = r_sum - t_sum
+        return inv
 
 
 class Transaction(models.Model):
@@ -72,4 +75,3 @@ class Restock(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-

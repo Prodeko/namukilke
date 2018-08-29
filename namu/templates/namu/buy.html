@@ -20,7 +20,7 @@ Account balance: {{ balance }}
 <ul>
 {% for product in product_list %}
 	<li>
-        {{ product.name }} -- Price {{ product.price }}
+        {{ product.name }} -- Price {{ product.price }} -- Available: {{ product.inventory_level }}
         <form action={% url "buy" user.id %} method="post">
             {% csrf_token %}
             <input name="product_id" type="hidden" value="{{ product.id }}">
