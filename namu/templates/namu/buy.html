@@ -1,31 +1,28 @@
-<!-- This is the page for buying stuff -->
-{% if messages %}
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
-{% endif %}
+{% extends 'namu/base.html' %}
 
-<br>
+{% block body %}
 
-Logged in as: {{ user.name }}
-<br>
-Account balance: {{ balance }}
-<br>
-<a href={% url "topup" user.id %}>Add more funds</a>
-<br>
-<a href={% url "index" %}>Change account</a>
+  Logged in as: {{ user.name }}
+  <br>
+  Account balance: {{ balance }}
+  <br>
+  <a href={% url "topup" user.id %}>Add more funds</a>
+  <br>
+  <a href={% url "index" %}>Change account</a>
 
-<h3>Selection</h3>
+  <h3>Selection</h3>
 
-<ul>
-{% for product in product_list %}
-	<li>
-        {{ product.name }} -- Price {{ product.price }} -- Available: {{ product.inventory_level }}
-        <form action={% url "buy" user.id %} method="post">
-            {% csrf_token %}
-            <input name="product_id" type="hidden" value="{{ product.id }}">
-            <input type="submit" value="Buy">
-        </form>
-	</li>
-{% endfor %}
-</ul>
+  <ul>
+  {% for product in product_list %}
+  	<li>
+          {{ product.name }} -- Price {{ product.price }} -- Available: {{ product.inventory_level }}
+          <form action={% url "buy" user.id %} method="post">
+              {% csrf_token %}
+              <input name="product_id" type="hidden" value="{{ product.id }}">
+              <input type="submit" value="Buy">
+          </form>
+  	</li>
+  {% endfor %}
+  </ul>
+
+{% endblock body %}

@@ -1,12 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.min.css' %}" rel="stylesheet" type="text/css">
+
+    <title>Namukilke</title>
 </head>
 <body>
+  <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
 
-<!--- ### Base HTML file to be used and imported in other HTML files. Content to be done. --->
+    {% block body %}
 
+    {% endblock body %}
+  </div>
+
+  <script src="{% static 'js/materialize.min.js' %}" type="text/javascript"></script>
 </body>
 </html>

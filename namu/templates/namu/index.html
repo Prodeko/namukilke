@@ -1,14 +1,18 @@
-<!-- Front page -->
+{% extends 'namu/base.html' %}
 
-<h3>Welcome to Namukilke!</h3>
-<br>
-Choose a user:
-<ul>
-{% for user in user_list %}
-    <li>
-        <a href={% url "buy" user.id %}>{{ user.name }} </a>
-    </li>
-{% endfor %}
-</ul>
-<br>
-<a href={% url "user-create" %}>Create new user</a>
+{% block body %}
+
+  <h3>Welcome to Namukilke!</h3>
+  <br>
+  Choose a user:
+  <ul>
+  {% for user in user_list %}
+      <li>
+          <a href={% url "buy" user.id %}>{{ user.name }} </a>
+      </li>
+  {% endfor %}
+  </ul>
+  <br>
+  <a href={% url "user-create" %}>Create new user</a>
+
+{% endblock body %}

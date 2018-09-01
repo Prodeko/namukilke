@@ -1,8 +1,14 @@
-<h3>Create new user</h3>
+{% extends 'namu/base.html' %}
 
-<!--- TODO: show form errors --->
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save" />
-</form>
+{% block body %}
+
+  <h3>Create new user</h3>
+
+  <!--- TODO: show form errors --->
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Save" />
+  </form>
+
+{% endblock body %}
