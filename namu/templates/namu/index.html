@@ -3,6 +3,7 @@
 {% block body %}
 
   <h3>Welcome to Namukilke!</h3>
+  <a href={% url "user-create" %}>Create new user</a>
   <br>
   Choose a user:
   <ul>
@@ -13,6 +14,33 @@
   {% endfor %}
   </ul>
   <br>
-  <a href={% url "user-create" %}>Create new user</a>
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+         <i class="material-icons prefix">textsms</i>
+         <input type="text" id="demo-auto" class="autocomplete">
+         <label for="demo-auto">Enter a Letter</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+      $('input.autocomplete').autocomplete({
+        data: {
+          "jQuery": null,
+          "JavaScript": 'https://www.jquery-az.com/wp-content/uploads/2017/12/favicon-32x32.png',
+          "CSS": null,
+          "HTML": null,
+          "Bootstrap": 'https://www.jquery-az.com/wp-content/uploads/2017/12/favicon-32x32.png',
+          "Java": null,
+          "Python": null,
+        },
+      });
+    });
+  </script>
 
 {% endblock body %}
