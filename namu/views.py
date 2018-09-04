@@ -27,7 +27,7 @@ class Index(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         users = User.objects.all()
-        user_names = {u.name: None for u in users}
+        user_names = {"{} - {}".format(u.id, u.name): None for u in users}
         context['user_autocomplete'] = json.dumps(user_names)
         return context
 

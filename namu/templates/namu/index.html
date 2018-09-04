@@ -6,6 +6,19 @@
   <a href={% url "user-create" %}>Create new user</a>
   <br>
   Choose a user:
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">textsms</i>
+          <input type="text" id="user-name" class="autocomplete">
+          <label for="user-name">Search with id or name</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  List of users
   <ul>
   {% for user in user_list %}
       <li>
@@ -13,27 +26,21 @@
       </li>
   {% endfor %}
   </ul>
-  <br>
-  <div class="row">
-    <div class="col s12">
-      <div class="row">
-        <div class="input-field col s12">
-         <i class="material-icons prefix">textsms</i>
-         <input type="text" id="demo-auto" class="autocomplete">
-         <label for="demo-auto">Enter a Letter</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
   <script>
     var user_data = {{ user_autocomplete|safe }}
     $(document).ready(function(){
       $('input.autocomplete').autocomplete({
         data: user_data,
+        onAutocomplete: function(){
+          var name = $("#user-name").val();
+          var n = name.indexOf("-");
+          var user_id = name.slice(0, n - 1);
+          location.assign(location + "id/" + user_id)
+        },
       });
     });
+
   </script>
 
 {% endblock body %}
