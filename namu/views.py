@@ -1,3 +1,4 @@
+import json
 from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -22,6 +23,13 @@ class Index(ListView):
     """Render a list of users for selection"""
     model = User
     template_name = 'namu/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = User.objects.all()
+        user_names = {u.name: None for u in users}
+        context['user_autocomplete'] = json.dumps(user_names)
+        return context
 
 
 # TODO: form validation: throw error if name > 100 char & warning if name is not unique

@@ -28,17 +28,10 @@
 
 
   <script>
+    var user_data = {{ user_autocomplete|safe }}
     $(document).ready(function(){
       $('input.autocomplete').autocomplete({
-        data: {
-          "jQuery": null,
-          "JavaScript": 'https://www.jquery-az.com/wp-content/uploads/2017/12/favicon-32x32.png',
-          "CSS": null,
-          "HTML": null,
-          "Bootstrap": 'https://www.jquery-az.com/wp-content/uploads/2017/12/favicon-32x32.png',
-          "Java": null,
-          "Python": null,
-        },
+        data: user_data,
       });
     });
   </script>
