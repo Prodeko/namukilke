@@ -21,11 +21,24 @@
   <div class="divider"></div>
 
   <div class="row section">
-    <div class="col s12">
-      <h5>Create a new user</h5>
-      <a class="waves-effect waves-light btn" href={% url "user-create" %}>Create new user</a>
-    </div>
+    <form class="col s4 offset-s4" action={% url "index" %} method="post">
+      <h5 class="section">Create a new user</h5>
+      <div class="row">
+        {% csrf_token %}
+        <div class="input-field">
+          <i class="material-icons prefix">person_add</i>
+          <input type="text" name="name" id="name">
+          <label for="name">Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field">
+          <button class="btn waves-effect waves-light" type="submit">Create new user</button>
+        </div>
+      </div>
+    </form>
   </div>
+  <div class="divider"></div>
 
   List of users (for debugging)
   <ul>
@@ -35,6 +48,7 @@
       </li>
   {% endfor %}
   </ul>
+
 
   <script>
     var user_data = {{ user_autocomplete|safe }}

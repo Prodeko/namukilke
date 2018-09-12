@@ -8,6 +8,5 @@ urlpatterns = [
     path('id/<int:user_id>/', views.redirect_to_buy, name='redirectToBuy'),
     path('id/<int:user_id>/buy', views.Buy.as_view(), name='buy'),
     path('id/<int:user_id>/topup', views.Topup.as_view(), name='topup'),
-    path('new/', views.UserCreate.as_view(), name='user-create'),
     path('products/', views.Products.as_view(), name='products'),
 ]

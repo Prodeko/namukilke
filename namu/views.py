@@ -31,11 +31,16 @@ class Index(ListView):
         context['user_autocomplete'] = json.dumps(user_names)
         return context
 
-
-# TODO: form validation: throw error if name > 100 char & warning if name is not unique
-class UserCreate(CreateView):
-    model = User
-    fields = ['name']
+    # TODO: form validation: throw error if name > 100 char & warning if name is not unique. current FieldError not working
+    def post(self, *args, **kwargs):
+        new_name = self.request.POST['name']
+        try:
+            u = User.objects.create(name=new_name)
+            u.save()
+            messages.success(self.request, 'Success - ' + u.name + ' created!')
+        except User.FieldError:
+            messages.error(self.request, 'Error - invalid name!')
+        return HttpResponseRedirect(reverse('topup', kwargs={'user_id': u.id}))
 
 
 class Products(ListView):
