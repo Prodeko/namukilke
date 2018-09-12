@@ -39,11 +39,17 @@
             <p>{{ product.inventory_level }} left in stock</p>
           </div>
           <div class="card-action">
-            <a href="#">Buy</a>
+            <form action={% url "buy" user.id %} method="post">
+              {% csrf_token %}
+              <input name="product_id" type="hidden" value="{{ product.id }}">
+              <button class="btn waves-effect waves-light" type="submit">Buy</button>
+            </form>
           </div>
         </div>
       </div>
     {% endfor %}
+
+
     <div class="col s4">
       <div class="card medium">
         <div class="card-image">
@@ -87,6 +93,8 @@
         </div>
       </div>
     </div>
+
+    
   </div>
   <div class="divider"></div>
 

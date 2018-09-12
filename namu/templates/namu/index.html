@@ -40,15 +40,6 @@
   </div>
   <div class="divider"></div>
 
-  List of users (for debugging)
-  <ul>
-  {% for user in user_list %}
-      <li>
-          <a href={% url "buy" user.id %}>{{ user.name }} </a>
-      </li>
-  {% endfor %}
-  </ul>
-
 
   <script>
     var user_data = {{ user_autocomplete|safe }}
