@@ -3,10 +3,11 @@
 {% block body %}
 
   <div class="row section">
-    <div class="col s12">
+    <div class="col s6 offset-s3">
       <h3>Namukilke</h3>
+      <div class="divider"></div>
       <h5>{{ user.name }}</h5>
-      <h6>Account balance: {{ user.account_balance }}</h6>
+      <h6>Account balance: {{ user.account_balance }} €</h6>
     </div>
   </div>
   <div class="row">
@@ -21,17 +22,40 @@
 
   <div class="row section">
     <div class="col s12">
-      <h3>Add funds to your account</h3>
+      <h5>Add funds to your account</h5>
     </div>
   </div>
 
-  <form action={% url "topup" user.id %} method="post">
-      {% csrf_token %}
-      <label for="amount">Amount: </label>
-      <input name="amount" type="number" value="0.00"> <br>
-      <input name="payment_method" type="radio" value="c" checked> Cash <br>
-      <input name="payment_method" type="radio" value="m"> MobilePay <br>
-      <button class="btn waves-effect" type="submit">Deposit</button>
-  </form>
+  <div class="row">
+    <form class="col s2 offset-s5 left-align" action={% url "topup" user.id %} method="post">
+      <div class="row">
+        {% csrf_token %}
+        <div class="input-field col s12">
+          <p>
+            <label>
+              <input class="with-gap" name="payment_method" type="radio" value="c" checked />
+              <span>Cash</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input class="with-gap" name="payment_method" type="radio" value="m" />
+              <span>MobilePay</span>
+            </label>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <label for="amount">Amount: </label>
+          <input name="amount" type="number" value="0.00">
+        </div>
+        <div class="input-field col s6">
+          <button class="btn waves-effect" type="submit">Deposit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="divider"></div>
 
 {% endblock body %}

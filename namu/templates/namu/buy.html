@@ -3,10 +3,11 @@
 {% block body %}
 
   <div class="row section">
-    <div class="col s12">
+    <div class="col s6 offset-s3">
       <h3>Namukilke</h3>
+      <div class="divider"></div>
       <h5>{{ user.name }}</h5>
-      <h6>Account balance: {{ balance }}</h6>
+      <h6>Account balance: {{ balance }} €</h6>
     </div>
   </div>
   <div class="row">
@@ -21,7 +22,7 @@
 
   <div class="row section">
     <div class="col s12">
-      <h3>Grab some food</h3>
+      <h5>Grab some food</h5>
     </div>
   </div>
 
@@ -87,18 +88,6 @@
       </div>
     </div>
   </div>
-
-  <ul>
-  {% for product in product_list %}
-  	<li>
-          {{ product.name }} -- Price {{ product.price }} -- Available: {{ product.inventory_level }}
-          <form action={% url "buy" user.id %} method="post">
-              {% csrf_token %}
-              <input name="product_id" type="hidden" value="{{ product.id }}">
-              <input type="submit" value="Buy">
-          </form>
-  	</li>
-  {% endfor %}
-  </ul>
+  <div class="divider"></div>
 
 {% endblock body %}
