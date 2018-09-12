@@ -7,8 +7,12 @@
   <!--- TODO: show form errors --->
   <form method="post">
       {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="Save" />
+      <div class="input-field col s12">
+        <i class="material-icons prefix">person_add</i>
+        <input type="text" id="name">
+        <label for="name">Name</label>
+        <button class="btn waves-effect" type="submit">Create user</button>
+      </div>
   </form>
 
 {% endblock body %}
