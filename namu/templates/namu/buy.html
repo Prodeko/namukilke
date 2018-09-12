@@ -2,15 +2,91 @@
 
 {% block body %}
 
-  Logged in as: {{ user.name }}
-  <br>
-  Account balance: {{ balance }}
-  <br>
-  <a href={% url "topup" user.id %}>Add more funds</a>
-  <br>
-  <a href={% url "index" %}>Change account</a>
+  <div class="row section">
+    <div class="col s12">
+      <h3>Namukilke</h3>
+      <h5>{{ user.name }}</h5>
+      <h6>Account balance: {{ balance }}</h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s6 right-align">
+      <a class="waves-effect waves-light btn" href={% url "index" %}>Change account</a>
+    </div>
+    <div class="col s6 left-align">
+      <a class="waves-effect waves-light btn" href={% url "topup" user.id %}>Add more funds</a>
+    </div>
+  </div>
+  <div class="divider"></div>
 
-  <h3>Selection</h3>
+  <div class="row section">
+    <div class="col s12">
+      <h3>Grab some food</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for product in product_list %}
+      <div class="col s4">
+        <div class="card medium">
+          <div class="card-image">
+            <img src="{{ product.picture }}" height="150" width="120">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{ product.name }}</span>
+            <span class="card-title">{{ product.price }} €</span>
+            <p>{{ product.inventory_level }} left in stock</p>
+          </div>
+          <div class="card-action">
+            <a href="#">Buy</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    <div class="col s4">
+      <div class="card medium">
+        <div class="card-image">
+          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="200" width="200">
+        </div>
+        <div class="card-content">
+          <span class="card-title">Haribo Click Mix</span>
+          <span class="card-title">0.80€</span>
+          <p>7 left in stock</p>
+        </div>
+        <div class="card-action">
+          <a href="#">Buy</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s4">
+      <div class="card small">
+        <div class="card-image">
+          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="250" width="250">
+        </div>
+        <div class="card-content">
+          <span class="card-title">Haribo Click Mix</span>
+          <p>Click mix description</p>
+        </div>
+        <div class="card-action">
+          <a href="#">Buy candies</a>
+        </div>
+      </div>
+    </div>
+    <div class="col s4">
+      <div class="card small">
+        <div class="card-image">
+          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="250" width="250">
+        </div>
+        <div class="card-content">
+          <span class="card-title">Haribo Click Mix</span>
+          <p>Click mix description</p>
+        </div>
+        <div class="card-action">
+          <a href="#">Buy candies</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <ul>
   {% for product in product_list %}

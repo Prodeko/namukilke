@@ -2,15 +2,28 @@
 
 {% block body %}
 
-  Logged in as: {{ user.name }}
-  <br>
-  Account balance: {{ user.account_balance }}
-  <br>
-  <a href={% url "buy" user.id %}>Buy snacks</a>
-  <br>
-  <a href={% url "index" %}>Change account</a>
+  <div class="row section">
+    <div class="col s12">
+      <h3>Namukilke</h3>
+      <h5>{{ user.name }}</h5>
+      <h6>Account balance: {{ user.account_balance }}</h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s6 right-align">
+      <a class="waves-effect waves-light btn" href={% url "index" %}>Change account</a>
+    </div>
+    <div class="col s6 left-align">
+      <a class="waves-effect waves-light btn" href={% url "buy" user.id %}>Purchase snacks</a></a>
+    </div>
+  </div>
+  <div class="divider"></div>
 
-  <h3>Add funds to your account</h3>
+  <div class="row section">
+    <div class="col s12">
+      <h3>Add funds to your account</h3>
+    </div>
+  </div>
 
   <form action={% url "topup" user.id %} method="post">
       {% csrf_token %}
