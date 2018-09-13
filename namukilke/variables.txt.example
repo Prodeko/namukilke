@@ -1,0 +1,12 @@
+# This is an example file of what a 'variables.txt' file 
+# should look like in production
+[DJANGO]
+SECRET = LongRandomStringHere
+
+[DB]
+NAME = <db_name_here>
+USER = <db_user_here>
+PASSWORD = <db_password_here>
+
+[DEBUG]
+MODE = <True_or_False>
