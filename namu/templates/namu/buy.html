@@ -30,7 +30,9 @@
     {% for product in product_list %}
         <div class="card medium" style="width:300px;height:400px;">
           <div class="card-image" style="max-width:auto;max-height:200px;">
-            <img src="{{ product.picture }}"/>
+            <a href="#">
+              <img src="{{ product.picture }}" onclick="document.getElementById('buy-{{ forloop.counter }}').submit();"/>
+            </a>
           </div>
           <div class="card-content">
             <span class="card-title">{{ product.name }}</span>
@@ -38,7 +40,7 @@
             <p>{{ product.inventory_level }} left in stock</p>
           </div>
           <div class="card-action">
-            <form action={% url "buy" user.id %} method="post">
+            <form id="buy-{{ forloop.counter }}" action={% url "buy" user.id %} method="post">
               {% csrf_token %}
               <input name="product_id" type="hidden" value="{{ product.id }}">
               <button class="btn waves-effect waves-light" type="submit">Buy</button>
