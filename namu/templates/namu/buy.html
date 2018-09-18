@@ -26,12 +26,11 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" style="display:grid;grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));justify-items: center;">
     {% for product in product_list %}
-      <div class="col s4">
-        <div class="card medium">
-          <div class="card-image">
-            <img src="{{ product.picture }}" height="150" width="120">
+        <div class="card medium" style="width:300px;height:400px;">
+          <div class="card-image" style="max-width:auto;max-height:200px;">
+            <img src="{{ product.picture }}"/>
           </div>
           <div class="card-content">
             <span class="card-title">{{ product.name }}</span>
@@ -46,55 +45,7 @@
             </form>
           </div>
         </div>
-      </div>
     {% endfor %}
-
-
-    <div class="col s4">
-      <div class="card medium">
-        <div class="card-image">
-          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="200" width="200">
-        </div>
-        <div class="card-content">
-          <span class="card-title">Haribo Click Mix</span>
-          <span class="card-title">0.80€</span>
-          <p>7 left in stock</p>
-        </div>
-        <div class="card-action">
-          <a href="#">Buy</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s4">
-      <div class="card small">
-        <div class="card-image">
-          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="250" width="250">
-        </div>
-        <div class="card-content">
-          <span class="card-title">Haribo Click Mix</span>
-          <p>Click mix description</p>
-        </div>
-        <div class="card-action">
-          <a href="#">Buy candies</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s4">
-      <div class="card small">
-        <div class="card-image">
-          <img src="https://karkkainen-com.azureedge.net/tuotekuva/ISO/5701090013899.jpg" height="250" width="250">
-        </div>
-        <div class="card-content">
-          <span class="card-title">Haribo Click Mix</span>
-          <p>Click mix description</p>
-        </div>
-        <div class="card-action">
-          <a href="#">Buy candies</a>
-        </div>
-      </div>
-    </div>
-
-    
   </div>
   <div class="divider"></div>
 
