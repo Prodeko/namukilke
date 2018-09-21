@@ -2,6 +2,8 @@
 
 {% block body %}
 
+{% load static %}
+
   <div class="row section">
     <div class="col s6 offset-s3">
       <h3>Namukilke</h3>
@@ -31,11 +33,11 @@
         <div class="card medium" style="width:300px;height:400px;">
           <div class="card-image" style="max-width:auto;max-height:200px;">
             <a href="#">
-              <img src="{{ product.picture }}" onclick="document.getElementById('buy-{{ forloop.counter }}').submit();"/>
+              <img src="{% static product.picture %}" onclick="document.getElementById('buy-{{ forloop.counter }}').submit();"/>
             </a>
           </div>
           <div class="card-content">
-            <span class="card-title">{{ product.name }}</span>
+            <span class="card-title">{{ product.name }} - {% static product.picture %}</span>
             <span class="card-title">{{ product.price }} €</span>
             <p>{{ product.inventory_level }} left in stock</p>
           </div>
