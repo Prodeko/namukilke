@@ -13,11 +13,13 @@
 </head>
 <body>
   <div class="container center-align">
-    {% if messages %}
-      {% for message in messages %}
-          {{ message }}
-      {% endfor %}
-    {% endif %}
+    <div class="row section">
+      {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+      {% endif %}
+    </div>
 
     {% block body %}
 
