@@ -27,7 +27,7 @@
   </div>
 
   <div class="row">
-    <form class="col s2 offset-s5 left-align" action={% url "topup" user.id %} method="post">
+    <form id="deposit-form" class="col s2 offset-s5 left-align" action={% url "topup" user.id %} method="post">
       <div class="row">
         {% csrf_token %}
         <div class="input-field col s12">
@@ -48,7 +48,7 @@
       <div class="row">
         <div class="input-field col s6">
           <label for="amount">Amount: </label>
-          <input name="amount" type="number" placeholder="0.00">
+          <input name="amount" id="amount" type="number" placeholder="0.00">
         </div>
         <div class="input-field col s6">
           <button class="btn waves-effect waves-light" type="submit">Deposit</button>
@@ -57,5 +57,42 @@
     </form>
   </div>
   <div class="divider"></div>
+
+  <div id="deposit-modal" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>
+        A bunch of text.
+        <br>
+        Payment method: <span id="modal-pmethod"></span>
+        <br>
+        Amount: <span id="modal-amount"></span>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn waves-effect waves-light modal-close" onclick="postDepositForm()">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    $( "#deposit-form" ).submit(function( event ) {
+      event.preventDefault();
+      var paymentMethod = $("input[name=payment_method]:checked").val();
+      var amount = $("#amount").val();
+      showModal(paymentMethod, amount);
+    });
+
+    function showModal(paymentMethod, amount) {
+      $("#modal-pmethod").html(paymentMethod);
+      $("#modal-amount").html(amount);
+      $('#deposit-modal').modal();
+      $('#deposit-modal').modal('open');
+    };
+
+    function postDepositForm() {
+      $("#deposit-form").off("submit");
+      $("#deposit-form").submit();
+    }
+  </script>
 
 {% endblock body %}
