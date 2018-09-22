@@ -14,11 +14,24 @@
 </head>
 <body>
   <div class="container center-align">
+
+    <div id="error-modal" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
     {% block body %}
 
     {% endblock body %}
   </div>
 
+  <!--- Show Success/Warning messages.
+  Throw an error modal instead if not enough funds. -->
   <script>
     {% if messages %}
       {% for message in messages %}
@@ -26,13 +39,19 @@
         var toastTag = '{{ message.tags }}';
         var toastClass = 'toast-' + toastTag;
       {% endfor %}
+
+      if (toastTag == 'error') {
+        $('#error-modal').modal();
+        $('#error-modal').modal('open');
+      } else {
         window.onload = function(){
           M.toast({
             html: toastHTML,
             classes: toastClass
           });
         };
-      {% endif %}
+      }
+    {% endif %}
   </script>
 
 </body>

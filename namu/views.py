@@ -39,7 +39,7 @@ class Index(ListView):
             u.save()
             messages.success(self.request, 'Success - ' + u.name + ' created!')
         except User.FieldError:
-            messages.error(self.request, 'Error - invalid name!')
+            messages.warning(self.request, 'Error - invalid name!')
         return HttpResponseRedirect(reverse('topup', kwargs={'user_id': u.id}))
 
 
