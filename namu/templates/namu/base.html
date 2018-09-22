@@ -27,5 +27,16 @@
     {% endblock body %}
   </div>
 
+  <script>
+    {% if messages %}
+      {% for message in messages %}
+        var toastHTML = '<h5>{{ message }}</h5>';
+      {% endfor %}
+        window.onload = function(){
+          M.toast({html: toastHTML});
+        };
+      {% endif %}
+  </script>
+
 </body>
 </html>
