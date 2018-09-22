@@ -4,8 +4,15 @@ from django.db.models import Sum
 from decimal import *
 
 
+class Namuseta(models.Model):
+    name = models.CharField(max_length=100)
+    mobilepay = models.CharField(max_length=100)
+    contact = models.CharField(max_length=100)
+
+
 class User(models.Model):
     name = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -36,7 +43,9 @@ class Product(models.Model):
         default='c'
     )
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
     picture = models.CharField(max_length=20, blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -54,6 +63,7 @@ class Transaction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
 
 
 class Deposit(models.Model):

@@ -68,7 +68,7 @@ class Buy(ListView):
 
         bal = u.account_balance()
         if bal >= p.price:
-            t = Transaction(product=p, user=u, price=p.price)
+            t = Transaction(product=p, user=u, price=p.price, cost=p.cost)
             t.save()
             messages.success(self.request, 'Success - ' + p.name + ' bought!')
         else:
@@ -87,7 +87,7 @@ class Buy(ListView):
 
 
 class Topup(DetailView):
-    """Let user make deposit. Might need to be detailview?"""
+    """Let user make deposit."""
     model = User
     template_name = 'namu/deposit_form.html'
     context_object_name = 'user'
