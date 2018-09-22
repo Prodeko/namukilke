@@ -14,14 +14,6 @@
 </head>
 <body>
   <div class="container center-align">
-    <div class="row section">
-      {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-      {% endif %}
-    </div>
-
     {% block body %}
 
     {% endblock body %}
@@ -30,10 +22,15 @@
   <script>
     {% if messages %}
       {% for message in messages %}
-        var toastHTML = '<h5>{{ message }}</h5>';
+        var toastHTML = '{{ message }}';
+        var toastTag = '{{ message.tags }}';
+        var toastClass = 'toast-' + toastTag;
       {% endfor %}
         window.onload = function(){
-          M.toast({html: toastHTML});
+          M.toast({
+            html: toastHTML,
+            classes: toastClass
+          });
         };
       {% endif %}
   </script>

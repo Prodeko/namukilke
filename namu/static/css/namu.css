@@ -18,7 +18,22 @@
 @media only screen and (min-width : 601px) {
   #toast-container {
     top: 2%;
-    right: 40% !important;
-    left: 40% !important;
-    width: 20%;
+    right: 35%;
+    left: 35%;
+    width: 30%;
+    height: 10%;
   }
+
+.toast {
+  font-weight: bold;
+  justify-content: center;
+  text-align: center;
+}
+
+.toast-success {
+  background-color: #388e3c;
+}
+
+.toast-error {
+  background-color: #d32f2f;
+}
