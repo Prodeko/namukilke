@@ -26,7 +26,7 @@ class Index(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        users = User.objects.all()
+        users = User.objects.filter(is_active=True)
         user_names = {"{} - {}".format(u.id, u.name): None for u in users}
         context['user_autocomplete'] = json.dumps(user_names)
         n = Namuseta.objects.get(pk=1)
@@ -76,6 +76,10 @@ class Buy(ListView):
         else:
             messages.error(self.request, 'Error - not enough funds!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
+
+    def get_queryset(self):
+        active_products = Product.objects.filter(is_active=True)
+        return active_products
 
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
