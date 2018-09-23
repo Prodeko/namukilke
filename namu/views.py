@@ -3,7 +3,7 @@ from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
-from .models import Namuseta, User, Product, Transaction, Deposit
+from .models import Namuseta, User, Product, Transaction, Deposit, Restock
 from django.db.models import Sum
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -92,6 +92,25 @@ class Buy(ListView):
         n = Namuseta.objects.get(pk=1)
         context['namuseta'] = n
         return context
+
+
+def revert_previous_transaction(request, **kwargs):
+    """Create deposit and restock objects to revert previous transaction"""
+    if request.method == 'POST':
+        try:
+            u = User.objects.get(pk=kwargs['user_id'])
+        except User.DoesNotExist:
+            raise Http404('Account does not exist')
+        try:
+            t = Transaction.objects.filter(user=u).last()
+            d = Deposit(user=u, amount=t.price, payment_method='r')
+            r = Restock(product=t.product, quantity=1, type='r')
+            d.save()
+            r.save()
+            messages.success(request, 'Success - ' + r.product.name + ' refunded')
+        except Transaction.DoesNotExist:
+            messages.warning(request, 'Error - No transactions to revert')
+        return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
 
 class Topup(DetailView):

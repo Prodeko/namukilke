@@ -22,6 +22,11 @@
   </div>
   <div class="divider"></div>
 
+  <form action={% url "revert" user.id %} method="post">
+    {% csrf_token %}
+    <button class="waves-effect waves-light btn">Revert</button>
+  </form>
+
   <div class="row section">
     <div class="col s12">
       <h5>Grab some food</h5>
