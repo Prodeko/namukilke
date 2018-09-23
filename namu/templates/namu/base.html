@@ -73,30 +73,40 @@
     </div>
   </main>
   <!--- Show Success/Warning messages.
-  Throw an error modal instead if not enough funds. -->
+  Throw an error modal instead if not enough funds.
+  Use tag 'info' for purchases and display UNDO button. --->
   <script>
     $(document).ready(function() {
-      $("#help-modal").modal();
+      $("#help-modal").modal({
+          displayLength: 6000
+      });
     });
 
     {% if messages %}
       {% for message in messages %}
-        var toastHTML = '{{ message }}';
+
         var toastTag = '{{ message.tags }}';
         var toastClass = 'toast-' + toastTag;
-      {% endfor %}
 
-      if (toastTag === 'error') {
-        $('#error-modal').modal();
-        $('#error-modal').modal('open');
-      } else {
-        window.onload = function(){
-          M.toast({
-            html: toastHTML,
-            classes: toastClass
-          });
+        if (toastTag === 'info') {
+          var toastHTML = '<span>{{ message }}</span><form action={% url "revert" user.id %} method="post">{% csrf_token %}<button class="btn-flat toast-action">Undo</button></form>';
+        } else {
+          var toastHTML = '{{ message }}';
         };
-      }
+
+        if (toastTag === 'error') {
+          $('#error-modal').modal();
+          $('#error-modal').modal('open');
+        } else {
+          window.onload = function(){
+            M.toast({
+              html: toastHTML,
+              classes: toastClass
+            });
+          };
+        };
+
+      {% endfor %}
     {% endif %}
   </script>
 

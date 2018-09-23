@@ -39,7 +39,7 @@ class Index(ListView):
         try:
             u = User.objects.create(name=new_name)
             u.save()
-            messages.success(self.request, 'Success - ' + u.name + ' created!')
+            messages.success(self.request, 'Account ' + u.name + ' created!')
         except User.FieldError:
             messages.warning(self.request, 'Error - invalid name!')
         return HttpResponseRedirect(reverse('topup', kwargs={'user_id': u.id}))
@@ -72,7 +72,7 @@ class Buy(ListView):
         if bal >= p.price:
             t = Transaction(product=p, user=u, price=p.price, cost=p.cost)
             t.save()
-            messages.success(self.request, 'Success - ' + p.name + ' bought!')
+            messages.info(self.request, p.name + ' bought!')
         else:
             messages.error(self.request, 'Error - not enough funds!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
@@ -101,14 +101,14 @@ def revert_previous_transaction(request, **kwargs):
             u = User.objects.get(pk=kwargs['user_id'])
         except User.DoesNotExist:
             raise Http404('Account does not exist')
-        try:
-            t = Transaction.objects.filter(user=u).last()
+        t = Transaction.objects.filter(user=u).last()
+        if t:
             d = Deposit(user=u, amount=t.price, payment_method='r')
             r = Restock(product=t.product, quantity=1, type='r')
             d.save()
             r.save()
-            messages.success(request, 'Success - ' + r.product.name + ' refunded')
-        except Transaction.DoesNotExist:
+            messages.success(request, r.product.name + ' refunded')
+        else:
             messages.warning(request, 'Error - No transactions to revert')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
@@ -132,5 +132,5 @@ class Topup(DetailView):
         u = self.get_object()
         d = Deposit(user=u, amount=self.request.POST['amount'], payment_method=self.request.POST['payment_method'])
         d.save()
-        messages.success(self.request, 'Success - ' + d.amount + ' euros added to your account!')
+        messages.success(self.request, d.amount + ' euros added to your account!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))

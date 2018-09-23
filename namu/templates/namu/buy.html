@@ -20,12 +20,8 @@
       <a class="waves-effect waves-light btn" href={% url "topup" user.id %}>Add more funds</a>
     </div>
   </div>
+  <br>
   <div class="divider"></div>
-
-  <form action={% url "revert" user.id %} method="post">
-    {% csrf_token %}
-    <button class="waves-effect waves-light btn">Revert</button>
-  </form>
 
   <div class="row section">
     <div class="col s12">
