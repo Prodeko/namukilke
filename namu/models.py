@@ -65,6 +65,9 @@ class Transaction(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     cost = models.DecimalField(max_digits=5, decimal_places=2)
 
+    def __str__(self):
+        return self.timestamp
+
 
 class Deposit(models.Model):
     PAYMENT_METHOD_OPTIONS = (
@@ -80,8 +83,23 @@ class Deposit(models.Model):
         default='c',
     )
 
+    def __str__(self):
+        return self.timestamp
+
 
 class Restock(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.timestamp
+
+
+class Feedback(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.title

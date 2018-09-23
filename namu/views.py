@@ -29,6 +29,8 @@ class Index(ListView):
         users = User.objects.all()
         user_names = {"{} - {}".format(u.id, u.name): None for u in users}
         context['user_autocomplete'] = json.dumps(user_names)
+        n = Namuseta.objects.get(pk=1)
+        context['namuseta'] = n
         return context
 
     # TODO: form validation: throw error if name > 100 char & warning if name is not unique. current FieldError not working
@@ -83,6 +85,8 @@ class Buy(ListView):
             raise Http404('Account does not exist')
         context['user'] = u
         context['balance'] = u.account_balance()
+        n = Namuseta.objects.get(pk=1)
+        context['namuseta'] = n
         return context
 
 
@@ -98,7 +102,7 @@ class Topup(DetailView):
         context['account_balance'] = self.get_object().account_balance()
         context['cash_units'] = [50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05]
         n = Namuseta.objects.get(pk=1)
-        context['mp'] = n.mobilepay
+        context['namuseta'] = n
         return context
 
     def post(self, *args, **kwargs):

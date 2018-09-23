@@ -13,24 +13,72 @@
   <title>Namukilke</title>
 </head>
 <body>
-  <div class="container center-align">
-    {% block body %}
-
-    {% endblock body %}
-  </div>
-
-  <div id="error-modal" class="modal">
-    <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
+  <main>
+    <div class="container section">
+      <a class="modal-trigger" href="#help-modal">
+        <i class="material-icons right small black-text">live_help</i>
+      </a>
     </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    <div class="container center-align">
+      {% block body %}
+
+      {% endblock body %}
+
+      <div id="help-modal" class="modal">
+        <div class="modal-content container">
+          <h4>Instructions</h4>
+          <p class="">
+            <strong>NOTE: Old balances from the paper sheets have been moved to the new system.</strong>
+            <br>
+            Names have been matched according to this sheet [link].
+            <br>
+            Contact Namusetä ({{ namuseta.name }}, {{ namuseta.contact }}) in case you spot any errors.
+          </p>
+          <hr>
+          <h6>Terminology</h6>
+          <p class="left-align">
+            Namukaappi: The closet, fridge, and freezer (inside the fridge) with snacks available for purchase.
+            <br>
+            Namukilke: This system for keeping track of purchases and account balances.
+            <br>
+            Namusetä: The guild member currently responsible for maintaining Namukaappi. Currently {{ namuseta.name }}.
+            <br>
+            Maitotyttö: Namusetä's best friend. Provides free coffee and milk.
+          </p>
+          <h6>Rules</h6>
+          <p class="left-align">
+            1. Each human should have only one account in Namukilke.
+            <br>
+            2. Account balance may never be negative. Add funds to you account before making a purchase. This is done by putting cash into the grey box or by sending a MobilePay payment as instructed in the deposit page.
+            <br>
+            3. If your account has not had any activity in two years, it may be deemed inactive. Balances of inactive accounts may be wiped and the money used for common good (e.g. free ice cream at the guild room).
+          </p>
+          <hr>
+          <h5>Feedback</h5>
+          <p>
+            Feel free to send any feedback or product requests to current Namusetä {{ namuseta.name }} at {{ namuseta.contact }}.
+            <!--- TODO: create an AJAX feedback form for anonymous feedback and store results in Feedback model --->
+          </p>
+          <button class="modal-close waves-effect waves-light btn">OK</button>
+        </div>
+      </div>
+
+      <div id="error-modal" class="modal">
+        <div class="modal-content">
+          <h4>Not enough funds!</h4>
+          <p>Add more funds to your account and try again.</p>
+          <button class="modal-close waves-effect waves-light btn">OK</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
   <!--- Show Success/Warning messages.
   Throw an error modal instead if not enough funds. -->
   <script>
+    $(document).ready(function() {
+      $("#help-modal").modal();
+    });
+
     {% if messages %}
       {% for message in messages %}
         var toastHTML = '{{ message }}';

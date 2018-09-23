@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-
+  <!--- Display modal to confirm deposit and give instructions for actual payment. -->
   <script>
     $( "#deposit-form" ).submit(function( event ) {
       event.preventDefault();
@@ -94,7 +94,7 @@
         $("#deposit-modal-text").html("Put cash in the grey box.")
       } else if (paymentMethod === "m") {
         $("#modal-pmethod").html("MobilePay");
-        var mp = "{{ mp }}"
+        var mp = "{{ namuseta.mobilepay }}"
         $("#mobilepay").html(mp)
         $("#deposit-modal-text").html("Send money with MobilePay to the above number. <br> No message needed in MobilePay.")
       }
