@@ -51,7 +51,7 @@
           <input name="amount" id="amount" type="number" placeholder="0.00">
         </div>
         <div class="input-field col s6">
-          <button class="btn waves-effect waves-light" type="submit">Deposit</button>
+          <button class="btn waves-effect waves-light" type="submit">Continue</button>
         </div>
       </div>
     </form>
@@ -60,22 +60,21 @@
 
   <div id="deposit-modal" class="modal">
     <div class="modal-content">
-      <h4>Modal Header</h4>
+      <h4>Make a deposit</h4>
       <p>
-        A bunch of text.
-        <br>
         Payment method: <span id="modal-pmethod"></span>
         <br>
-        Amount: <span id="modal-amount"></span>
+        Amount: <span id="modal-amount"></span> €
       </p>
-    </div>
-    <div class="modal-footer">
+      <p id="mobilepay"></p>
+      <p id="deposit-modal-text"></p>
+      <br>
       <div class="row center-align">
         <div class="col s6 right-align">
           <button class="btn waves-effect waves-light modal-close red darken-2">Cancel</button>
         </div>
         <div class="col s6 left-align">
-          <button class="btn waves-effect waves-light modal-close" onclick="postDepositForm()">Submit</button>
+          <button class="btn waves-effect waves-light modal-close" onclick="postDepositForm()">Done</button>
         </div>
       </div>
     </div>
@@ -90,7 +89,15 @@
     });
 
     function showModal(paymentMethod, amount) {
-      $("#modal-pmethod").html(paymentMethod);
+      if (paymentMethod === "c") {
+        $("#modal-pmethod").html("Cash");
+        $("#deposit-modal-text").html("Put cash in the grey box.")
+      } else if (paymentMethod === "m") {
+        $("#modal-pmethod").html("MobilePay");
+        var mp = "{{ mp }}"
+        $("#mobilepay").html(mp)
+        $("#deposit-modal-text").html("Send money with MobilePay to the above number. <br> No message needed in MobilePay.")
+      }
       $("#modal-amount").html(amount);
       $('#deposit-modal').modal();
       $('#deposit-modal').modal('open');

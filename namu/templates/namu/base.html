@@ -38,7 +38,7 @@
         var toastClass = 'toast-' + toastTag;
       {% endfor %}
 
-      if (toastTag == 'error') {
+      if (toastTag === 'error') {
         $('#error-modal').modal();
         $('#error-modal').modal('open');
       } else {

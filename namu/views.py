@@ -3,7 +3,7 @@ from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
-from .models import User, Product, Transaction, Deposit
+from .models import Namuseta, User, Product, Transaction, Deposit
 from django.db.models import Sum
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -51,7 +51,7 @@ class Products(ListView):
 
 
 class Buy(ListView):
-    """Display information about user & allow to purchase items"""
+    """Display information about user & allow them to purchase products"""
     model = Product
     template_name = 'namu/buy.html'
 
@@ -87,9 +87,9 @@ class Buy(ListView):
 
 
 class Topup(DetailView):
-    """Let user make deposit."""
+    """Let user make a deposit."""
     model = User
-    template_name = 'namu/deposit_form.html'
+    template_name = 'namu/topup.html'
     context_object_name = 'user'
     pk_url_kwarg = 'user_id'
 
@@ -97,6 +97,8 @@ class Topup(DetailView):
         context = super(Topup, self).get_context_data(**kwargs)
         context['account_balance'] = self.get_object().account_balance()
         context['cash_units'] = [50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05]
+        n = Namuseta.objects.get(pk=1)
+        context['mp'] = n.mobilepay
         return context
 
     def post(self, *args, **kwargs):
