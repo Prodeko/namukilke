@@ -66,13 +66,14 @@ class Transaction(models.Model):
     cost = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return self.timestamp
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Deposit(models.Model):
     PAYMENT_METHOD_OPTIONS = (
         ('c', 'Cash'),
         ('m', 'MobilePay'),
+        ('r', 'Refund'),
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -84,16 +85,25 @@ class Deposit(models.Model):
     )
 
     def __str__(self):
-        return self.timestamp
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Restock(models.Model):
+    RESTOCK_TYPES = (
+        ('s', 'Stock'),
+        ('r', 'Refund'),
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    type = models.CharField(
+        max_length=1,
+        choices=RESTOCK_TYPES,
+        default='s',
+    )
 
     def __str__(self):
-        return self.timestamp
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Feedback(models.Model):
