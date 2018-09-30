@@ -41,6 +41,7 @@ DEBUG = False
 
 INSTALLED_APPS = [
     'namu.apps.NamuConfig',
+    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
