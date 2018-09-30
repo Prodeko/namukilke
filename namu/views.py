@@ -116,7 +116,7 @@ def revert_previous_transaction(request, **kwargs):
 class Topup(DetailView):
     """Let user make a deposit."""
     model = User
-    template_name = 'namu/deposit_form.html'
+    template_name = 'namu/toptup.html'
     context_object_name = 'user'
     pk_url_kwarg = 'user_id'
 
