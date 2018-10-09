@@ -15,6 +15,10 @@
   height: 200px;
 }
 
+.card-title {
+  font-size: 1.5em !important;
+}
+
 @media only screen and (min-width : 601px) {
   #toast-container {
     top: 2%;
@@ -23,6 +27,10 @@
     width: 30%;
     height: 10%;
   }
+  html, span {
+    font-size: 1.2em;
+  }
+}
 
 .toast {
   justify-content: center;
