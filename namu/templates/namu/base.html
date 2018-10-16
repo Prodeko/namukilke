@@ -14,7 +14,11 @@
 </head>
 <body>
   <main>
+    {% load static %}
     <div class="container section">
+      <a href="https://www.fiksuruoka.fi/" target="_blank">
+        <img src="{% static 'img/fiksuruoka.png' %}" width="180px"/>
+      </a>
       <a class="modal-trigger" href="#help-modal">
         <i class="material-icons right small black-text">live_help</i>
       </a>
