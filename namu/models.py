@@ -30,6 +30,9 @@ class User(models.Model):
 
 
 class Product(models.Model):
+    class Meta:
+        ordering = ['name']
+
     CATEGORY_OPTIONS = (
         ('z', 'Freezer'),
         ('f', 'Fridge'),
