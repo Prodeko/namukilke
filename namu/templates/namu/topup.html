@@ -31,20 +31,20 @@
       <div class="row">
         {% csrf_token %}
         <div class="input-field col s12">
-          <p>
-            <label>
-              <input class="with-gap" name="payment_method" type="radio" value="c" checked />
-              <span>Cash</span>
-            </label>
-          </p>
           <!---
           <p>
             <label>
-              <input class="with-gap" name="payment_method" type="radio" value="m" />
-              <span>MobilePay</span>
+              <input class="with-gap" name="payment_method" type="radio" value="c" />
+              <span>Cash</span>
             </label>
           </p>
           --->
+          <p>
+            <label>
+              <input class="with-gap" name="payment_method" type="radio" value="m" checked />
+              <span>MobilePay</span>
+            </label>
+          </p>
         </div>
       </div>
       <div class="row">
@@ -64,8 +64,10 @@
     <div class="modal-content">
       <h4>Make a deposit</h4>
       <p>
+        <!--
         Payment method: <span id="modal-pmethod"></span>
         <br>
+        -->
         Amount: <span id="modal-amount"></span> €
       </p>
       <p id="mobilepay"></p>
@@ -96,9 +98,9 @@
         $("#deposit-modal-text").html("Put cash in the grey box.")
       } else if (paymentMethod === "m") {
         $("#modal-pmethod").html("MobilePay");
-        var mp = "{{ namuseta.mobilepay }}"
+        var mp = "Number: {{ namuseta.mobilepay }}"
         $("#mobilepay").html(mp)
-        $("#deposit-modal-text").html("Send money with MobilePay to the above number. <br> No message needed in MobilePay.")
+        $("#deposit-modal-text").html("Send money with MobilePay to the above number.")
       }
       $("#modal-amount").html(amount);
       $('#deposit-modal').modal();
