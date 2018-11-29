@@ -4,26 +4,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/namu.css' %}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
 
   <title>Namukilke</title>
 </head>
 <body>
-  <div class="container center-align">
+  <main>
+    {% load static %}
+    <div class="container section">
+      <a href="https://www.fiksuruoka.fi/" target="_blank">
+        <img src="{% static 'img/fiksuruoka.png' %}" width="180px"/>
+      </a>
+      <a class="modal-trigger" href="#help-modal">
+        <i class="material-icons right small black-text">live_help</i>
+      </a>
+    </div>
+    <div class="container center-align">
+      {% block body %}
+
+      {% endblock body %}
+
+      <div id="help-modal" class="modal">
+        <div class="modal-content container">
+          <h4>Namukilke</h4>
+          <p class="">
+            <strong>NOTE: Old balances from the paper sheets have been moved to the new system.</strong>
+            <br>
+            Names have been matched according to <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1e_Gda6m-_ISckgfWwiCK7IjvTVNsmCcqdzZKV6CFYo4/edit?usp=sharing">this sheet</a>.
+            <br>
+            Contact Namusetä in case you spot any errors.
+          </p>
+          <hr>
+          <h6>What's with these weird Finnish words</h6>
+          <p class="left-align">
+            Namukaappi: The closet, fridge, and freezer (inside the fridge) with snacks available for purchase.
+            <br>
+            Namukilke: This system for keeping track of purchases and account balances.
+            <br>
+            Namusetä: The guild member currently responsible for maintaining Namukaappi. Currently {{ namuseta.name }}.
+            <br>
+            Maitotyttö: Namusetä's best friend. Provides free coffee and milk.
+          </p>
+          <h6>Instructions</h6>
+          <p class="left-align">
+            1. Each human should have only one account in Namukilke.
+            <br>
+            2. Account balance may never be negative. Add funds to you account before making a purchase. This is done by putting cash into the grey box as instructed on the deposit page.
+            <br>
+            3. If your account has not had any activity in two years, it may be deemed inactive. Balances of inactive accounts may be wiped and the money used for common good (e.g. free ice cream at the guild room).
+          </p>
+          <hr>
+          <h5>Feedback</h5>
+          <p>
+            Feel free to send any feedback or product requests to current Namusetä {{ namuseta.name }} at {{ namuseta.contact }}.
+            <!--- TODO: create an AJAX feedback form for anonymous feedback and store results in Feedback model --->
+          </p>
+          <button class="modal-close waves-effect waves-light btn">OK</button>
+        </div>
+      </div>
+
+      <div id="error-modal" class="modal">
+        <div class="modal-content">
+          <h4>Not enough funds!</h4>
+          <p>Add more funds to your account and try again.</p>
+          <button class="modal-close waves-effect waves-light btn">OK</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!--- Show Success/Warning messages.
+  Throw an error modal instead if not enough funds.
+  Use tag 'info' for purchases and display UNDO button. --->
+  <script>
+    $(document).ready(function() {
+      $("#help-modal").modal({
+          displayLength: 6000
+      });
+    });
+
     {% if messages %}
       {% for message in messages %}
-          {{ message }}
+
+        var toastTag = '{{ message.tags }}';
+        var toastClass = 'toast-' + toastTag;
+
+        if (toastTag === 'info') {
+          var toastHTML = '<span>{{ message }}</span><form action={% url "revert" user.id %} method="post">{% csrf_token %}<button class="btn-flat toast-action">Undo</button></form>';
+        } else {
+          var toastHTML = '{{ message }}';
+        };
+
+        if (toastTag === 'error') {
+          $('#error-modal').modal();
+          $('#error-modal').modal('open');
+        } else {
+          window.onload = function(){
+            M.toast({
+              html: toastHTML,
+              classes: toastClass
+            });
+          };
+        };
+
       {% endfor %}
     {% endif %}
-
-    {% block body %}
-
-    {% endblock body %}
-  </div>
+  </script>
 
 </body>
 </html>

@@ -1,0 +1,46 @@
+@charset "UTF-8";
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  justify-items: center;
+}
+
+.card.medium {
+  width: 300px;
+  height: 400px;
+}
+
+.card-image {
+  width: 300px;
+  height: 200px;
+}
+
+.card-title {
+  font-size: 1.5em !important;
+}
+
+@media only screen and (min-width : 601px) {
+  #toast-container {
+    top: 2%;
+    right: 35%;
+    left: 35%;
+    width: 30%;
+    height: 10%;
+  }
+  html {
+    font-size: 1.2em;
+  }
+}
+
+.toast {
+  justify-content: center;
+  text-align: center;
+}
+
+.toast-warning {
+  background-color: #d32f2f;
+}
+
+.toast-error {
+  background-color: #d32f2f;
+}

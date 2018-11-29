@@ -4,8 +4,15 @@ from django.db.models import Sum
 from decimal import *
 
 
+class Namuseta(models.Model):
+    name = models.CharField(max_length=100)
+    mobilepay = models.CharField(max_length=100)
+    contact = models.CharField(max_length=100)
+
+
 class User(models.Model):
     name = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -23,6 +30,9 @@ class User(models.Model):
 
 
 class Product(models.Model):
+    class Meta:
+        ordering = ['name']
+
     CATEGORY_OPTIONS = (
         ('z', 'Freezer'),
         ('f', 'Fridge'),
@@ -36,7 +46,9 @@ class Product(models.Model):
         default='c'
     )
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    picture = models.URLField()
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
+    picture = models.CharField(max_length=20, blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -54,12 +66,17 @@ class Transaction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    cost = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
 
 class Deposit(models.Model):
     PAYMENT_METHOD_OPTIONS = (
         ('c', 'Cash'),
         ('m', 'MobilePay'),
+        ('r', 'Refund'),
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -70,8 +87,32 @@ class Deposit(models.Model):
         default='c',
     )
 
+    def __str__(self):
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
 
 class Restock(models.Model):
+    RESTOCK_TYPES = (
+        ('s', 'Stock'),
+        ('r', 'Refund'),
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    type = models.CharField(
+        max_length=1,
+        choices=RESTOCK_TYPES,
+        default='s',
+    )
+
+    def __str__(self):
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+
+class Feedback(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.title

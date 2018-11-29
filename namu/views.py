@@ -3,7 +3,7 @@ from decimal import *
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
-from .models import User, Product, Transaction, Deposit
+from .models import Namuseta, User, Product, Transaction, Deposit, Restock
 from django.db.models import Sum
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -26,9 +26,11 @@ class Index(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        users = User.objects.all()
+        users = User.objects.filter(is_active=True)
         user_names = {"{} - {}".format(u.id, u.name): None for u in users}
         context['user_autocomplete'] = json.dumps(user_names)
+        n = Namuseta.objects.get(pk=1)
+        context['namuseta'] = n
         return context
 
     # TODO: form validation: throw error if name > 100 char & warning if name is not unique. current FieldError not working
@@ -37,9 +39,9 @@ class Index(ListView):
         try:
             u = User.objects.create(name=new_name)
             u.save()
-            messages.success(self.request, 'Success - ' + u.name + ' created!')
+            messages.success(self.request, 'Account ' + u.name + ' created!')
         except User.FieldError:
-            messages.error(self.request, 'Error - invalid name!')
+            messages.warning(self.request, 'Error - invalid name!')
         return HttpResponseRedirect(reverse('topup', kwargs={'user_id': u.id}))
 
 
@@ -51,7 +53,7 @@ class Products(ListView):
 
 
 class Buy(ListView):
-    """Display information about user & allow to purchase items"""
+    """Display information about user & allow them to purchase products"""
     model = Product
     template_name = 'namu/buy.html'
 
@@ -68,12 +70,16 @@ class Buy(ListView):
 
         bal = u.account_balance()
         if bal >= p.price:
-            t = Transaction(product=p, user=u, price=p.price)
+            t = Transaction(product=p, user=u, price=p.price, cost=p.cost)
             t.save()
-            messages.success(self.request, 'Success - ' + p.name + ' bought!')
+            messages.info(self.request, p.name + ' bought!')
         else:
             messages.error(self.request, 'Error - not enough funds!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
+
+    def get_queryset(self):
+        active_products = Product.objects.filter(is_active=True)
+        return active_products
 
     def get_context_data(self, *args, **kwargs):
         context = super(Buy, self).get_context_data(**kwargs)
@@ -83,13 +89,34 @@ class Buy(ListView):
             raise Http404('Account does not exist')
         context['user'] = u
         context['balance'] = u.account_balance()
+        n = Namuseta.objects.get(pk=1)
+        context['namuseta'] = n
         return context
 
 
+def revert_previous_transaction(request, **kwargs):
+    """Create deposit and restock objects to revert previous transaction"""
+    if request.method == 'POST':
+        try:
+            u = User.objects.get(pk=kwargs['user_id'])
+        except User.DoesNotExist:
+            raise Http404('Account does not exist')
+        t = Transaction.objects.filter(user=u).last()
+        if t:
+            d = Deposit(user=u, amount=t.price, payment_method='r')
+            r = Restock(product=t.product, quantity=1, type='r')
+            d.save()
+            r.save()
+            messages.success(request, r.product.name + ' refunded')
+        else:
+            messages.warning(request, 'Error - No transactions to revert')
+        return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
+
+
 class Topup(DetailView):
-    """Let user make deposit. Might need to be detailview?"""
+    """Let user make a deposit."""
     model = User
-    template_name = 'namu/deposit_form.html'
+    template_name = 'namu/topup.html'
     context_object_name = 'user'
     pk_url_kwarg = 'user_id'
 
@@ -97,11 +124,13 @@ class Topup(DetailView):
         context = super(Topup, self).get_context_data(**kwargs)
         context['account_balance'] = self.get_object().account_balance()
         context['cash_units'] = [50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05]
+        n = Namuseta.objects.get(pk=1)
+        context['namuseta'] = n
         return context
 
     def post(self, *args, **kwargs):
         u = self.get_object()
         d = Deposit(user=u, amount=self.request.POST['amount'], payment_method=self.request.POST['payment_method'])
         d.save()
-        messages.success(self.request, 'Success - ' + d.amount + ' euros added to your account!')
+        messages.success(self.request, d.amount + ' euros added to your account!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))

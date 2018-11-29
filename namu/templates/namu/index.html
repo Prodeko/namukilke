@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="row section">
-    <div class="col s4 offset-s4">
+    <div class="col s6 offset-s3">
       <h5 class="section">Choose an existing user</h5>
       <div class="input-field">
         <i class="material-icons prefix">person</i>
@@ -21,25 +21,24 @@
   <div class="divider"></div>
 
   <div class="row section">
-    <form class="col s4 offset-s4" action={% url "index" %} method="post">
+    <form class="col s6 offset-s3" action={% url "index" %} method="post">
       <h5 class="section">Create a new user</h5>
       <div class="row">
         {% csrf_token %}
         <div class="input-field">
           <i class="material-icons prefix">person_add</i>
-          <input type="text" name="name" id="name">
+          <input type="text" name="name" id="name" required>
           <label for="name">Name</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
-          <button class="btn waves-effect waves-light" type="submit">Create new user</button>
+          <button class="btn btn-large waves-effect waves-light" type="submit"><span>Create new user</span></button>
         </div>
       </div>
     </form>
   </div>
   <div class="divider"></div>
-
 
   <script>
     var user_data = {{ user_autocomplete|safe }}
