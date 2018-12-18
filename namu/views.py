@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from .models import Namuseta, User, Product, Transaction, Deposit, Restock
-from django.db.models import Sum
+from django.db.models import Q, Sum, Count
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
@@ -78,7 +78,13 @@ class Buy(ListView):
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
 
     def get_queryset(self):
-        active_products = Product.objects.filter(is_active=True)
+        u = User.objects.get(pk=self.kwargs['user_id'])
+        if Transaction.objects.filter(user=u).exists():
+            user_transaction = Count('transaction', filter=Q(transaction__user=u))
+            products = Product.objects.annotate(buy_count=user_transaction)
+            active_products = products.filter(is_active=True).order_by('-buy_count')
+        else:
+            active_products = Product.objects.filter(is_active=True)
         return active_products
 
     def get_context_data(self, *args, **kwargs):
