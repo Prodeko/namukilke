@@ -10,4 +10,5 @@ urlpatterns = [
     path('id/<int:user_id>/topup', views.Topup.as_view(), name='topup'),
     path('id/<int:user_id>/revert', views.revert_previous_transaction, name='revert'),
     path('products/', views.Products.as_view(), name='products'),
+    path('stats/', views.statistics, name='stats'),
 ]

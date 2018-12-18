@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from .models import Namuseta, User, Product, Transaction, Deposit, Restock
 from django.db.models import Q, Sum, Count
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -140,3 +140,33 @@ class Topup(DetailView):
         d.save()
         messages.success(self.request, d.amount + ' euros added to your account!')
         return HttpResponseRedirect(reverse('buy', kwargs={'user_id': u.id}))
+
+
+def statistics(request, **kwargs):
+    """Show basic statistics of topups and purchases."""
+    if request.method == 'GET':
+        # TODO: multiply quantity with price:
+        # restock = Restock.objects.filter(type='s').aggregate(restock_price=Sum('product__price'), restock_cost=Sum('product__cost'))
+        #TODO: add time interval
+        sales = Transaction.objects.aggregate(sales_price=Sum('price'), sales_cost=Sum('cost'))
+        refunds =  Deposit.objects.filter(payment_method='r').aggregate(amount=Sum('amount'))
+        deposits = Deposit.objects.filter(Q(payment_method='m') | Q(payment_method='c')).aggregate(amount=Sum('amount'))
+
+        t = Transaction.objects.aggregate(sum=Sum('price'))
+        t_sum = t['sum'] or Decimal(0.00)
+        d = Deposit.objects.aggregate(sum=Sum('amount'))
+        d_sum = d['sum'] or Decimal(0.00)
+        balance = round(d_sum - t_sum, 2)
+
+        context = {
+            'date_start': 'aloituspvm',
+            'date_end': 'lopetuspvm',
+            'sales_price': sales['sales_price'],
+            'sales_cost': sales['sales_cost'],
+            'refunds': refunds['amount'],
+            'deposits': deposits['amount'],
+            'balance': balance,
+        }
+
+        return render(request, 'namu/stats.html', context)
+    pass
