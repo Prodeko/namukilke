@@ -31,40 +31,20 @@
 
       <div id="help-modal" class="modal">
         <div class="modal-content container">
-          <h4>Namukilke</h4>
-          <p class="">
-            <strong>NOTE: Old balances from the paper sheets have been moved to the new system.</strong>
-            <br>
-            Names have been matched according to <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/spreadsheets/d/1e_Gda6m-_ISckgfWwiCK7IjvTVNsmCcqdzZKV6CFYo4/edit?usp=sharing">this sheet</a>.
-            <br>
-            Contact Namusetä in case you spot any errors.
-          </p>
-          <hr>
-          <h6>What's with these weird Finnish words</h6>
-          <p class="left-align">
-            Namukaappi: The closet, fridge, and freezer (inside the fridge) with snacks available for purchase.
-            <br>
-            Namukilke: This system for keeping track of purchases and account balances.
-            <br>
-            Namusetä: The guild member currently responsible for maintaining Namukaappi. Currently {{ namuseta.name }}.
-            <br>
-            Maitotyttö: Namusetä's best friend. Provides free coffee and milk.
-          </p>
-          <h6>Instructions</h6>
+          <h5>Instructions</h5>
           <p class="left-align">
             1. Each human should have only one account in Namukilke.
-            <br>
-            2. Account balance may never be negative. Add funds to you account before making a purchase. This is done by putting cash into the grey box as instructed on the deposit page.
-            <br>
-            3. If your account has not had any activity in two years, it may be deemed inactive. Balances of inactive accounts may be wiped and the money used for common good (e.g. free ice cream at the guild room).
           </p>
-          <hr>
-          <h5>Feedback</h5>
+          <p class="left-align">
+            2. Account balance may never be negative. Add funds to you account before making a purchase.
+          </p>
+          <p class="left-align">
+            3. Account may be deemed inactive if there has not had any activity for two years. Balances of inactive accounts may be wiped and the money used for common good (e.g. free ice cream at the guild room).
+          </p>
           <p>
-            Feel free to send any feedback or product requests to current Namusetä {{ namuseta.name }} at {{ namuseta.contact }}.
-            <!--- TODO: create an AJAX feedback form for anonymous feedback and store results in Feedback model --->
+            Send any feedback or product requests to Namusetä {{ namuseta.name }} at {{ namuseta.contact }}.
           </p>
-          <button class="modal-close waves-effect waves-light btn">OK</button>
+          <button class="modal-close waves-effect waves-light btn">Close</button>
         </div>
       </div>
 
