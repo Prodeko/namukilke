@@ -10,9 +10,9 @@ Toistaiseksi tuotekuvien hallintaan ei ole admin käyttöliittymää. Uutta tuot
 
 ## Todo-lista
 Päivitetty 7.12.2018
-- [ ] Zoomauksen fiksaaminen deposit-sivulla (auto zoom-out tai disable zoom)
+- [X] Zoomauksen fiksaaminen deposit-sivulla (auto zoom-out tai disable zoom)
 - [ ] Feedback form tuotetoiveita varten etusivulle tai ostamissivulle (Google form tai Django form)
-- [ ] Tuotelistauksen järjestäminen käyttäjäkohtaisesti suosituimmat tuotteet ensin
+- [X] Tuotelistauksen järjestäminen käyttäjäkohtaisesti suosituimmat tuotteet ensin
 - [ ] Statistiikkasivu (namu.prodeko.org/stats) josta voi seurata hävikkiä sekä käyttäjä- ja tuotekohtaisia tilastoja
 - [ ] Admin käyttöliittymä tuotekuvien lisäämiseen palvelimelle
 - [ ] Ostaminen AJAX post jotta helpompi ostaa useita tuotteita
