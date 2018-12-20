@@ -27,6 +27,9 @@
     width: 30%;
     height: 10%;
   }
+  html {
+    font-size: 1.1em;
+  }
 }
 
 .toast {
