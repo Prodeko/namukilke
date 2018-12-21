@@ -2,6 +2,51 @@
 
 {% block body %}
 
-  {{ date_start }}
+  <h3>Statistacs</h3>
+  <p>Timestamps in UTC</p>
+  <form id="date_form" action="{% url "stats" %}" method="get">
+    <div class="row">
+      <div class="col s2 offset-s4">
+        Start date <input type="text" name="start" class="datepicker center-align">
+        <br>
+        {{ date_start }}
+      </div>
+      <div class="col s2">
+        End date <input type="text" name="end" class="datepicker center-align">
+        <br>
+        {{ date_end }}
+      </div>
+    </div>
+    <div class="row center-align">
+      <button class="btn waves-effect waves-light" type="submit"><span>Refresh</span></button>
+    </div>
+  </form>
+  <div class="row section">
+    <div class="col s6 right-align">Sales:</div>
+    <div class="col s6 left-align">{{ sales_price }}</div>
 
+    <div class="col s6 right-align">Refunds:</div>
+    <div class="col s6 left-align">{{ refunds }}</div>
+
+    <div class="col s6 right-align">Deposits:</div>
+    <div class="col s6 left-align">{{ deposits }}</div>
+
+    <div class="col s6 right-align">Balances {{ date_start }}:</div>
+    <div class="col s6 left-align">{{ balances_start }}</div>
+
+    <div class="col s6 right-align">Balances {{ date_end }}:</div>
+    <div class="col s6 left-align">{{ balances_end }}</div>
+
+    <div class="col s6 right-align">Change in balances:</div>
+    <div class="col s6 left-align">{{ balances_change }}</div>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+      $('.datepicker').datepicker(
+        autoClose: true
+        format: 'yyyy-mm-dd'
+      );
+    });
+  </script>
 {% endblock body %}

@@ -9,6 +9,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from datetime import datetime
 
 
 def redirect_to_buy(request, user_id):
@@ -145,27 +146,49 @@ class Topup(DetailView):
 def statistics(request, **kwargs):
     """Show basic statistics of topups and purchases."""
     if request.method == 'GET':
-        # TODO: multiply quantity with price:
-        # restock = Restock.objects.filter(type='s').aggregate(restock_price=Sum('product__price'), restock_cost=Sum('product__cost'))
-        #TODO: add time interval
-        sales = Transaction.objects.aggregate(sales_price=Sum('price'), sales_cost=Sum('cost'))
-        refunds =  Deposit.objects.filter(payment_method='r').aggregate(amount=Sum('amount'))
-        deposits = Deposit.objects.filter(Q(payment_method='m') | Q(payment_method='c')).aggregate(amount=Sum('amount'))
 
-        t = Transaction.objects.aggregate(sum=Sum('price'))
-        t_sum = t['sum'] or Decimal(0.00)
-        d = Deposit.objects.aggregate(sum=Sum('amount'))
-        d_sum = d['sum'] or Decimal(0.00)
-        balance = round(d_sum - t_sum, 2)
+        # TODO: multiply quantity with price to get restocks. Should store the cost in
+        # restock = Restock.objects.filter(type='s').aggregate(restock_price=Sum('product__price'), restock_cost=Sum('product__cost'))
+
+        start = request.GET.get('start', '2018-09-01')
+        end = request.GET.get('end', datetime.now().strftime("%Y-%m-%d"))
+
+        # Change in sales, refunds, deposits, and balances
+        sales = Transaction.objects.filter(timestamp__gte=start, timestamp__lt=end).aggregate(price=Sum('price'), cost=Sum('cost'))
+        sales_price = round(sales['price'] or Decimal(0.00), 2)
+        sales_cost = round(sales['cost'] or Decimal(0.00), 2)
+
+        refunds =  Deposit.objects.filter(payment_method='r', timestamp__gte=start, timestamp__lt=end).aggregate(amount=Sum('amount'))
+        refunds = round(refunds['amount'] or Decimal(0.00), 2)
+
+        deposits = Deposit.objects.filter(Q(payment_method='m') | Q(payment_method='c'), timestamp__gte=start, timestamp__lt=end).aggregate(amount=Sum('amount'))
+        deposits = round(deposits['amount'] or Decimal(0.00), 2)
+
+        balances_change = deposits + refunds - sales_price
+
+        # Balances at start
+        sales_until_start = Transaction.objects.filter(timestamp__lt=start).aggregate(price=Sum('price'), cost=Sum('cost'))
+        sales_price_until_start = round(sales_until_start['price'] or Decimal(0.00), 2)
+
+        refunds_until_start =  Deposit.objects.filter(payment_method='r', timestamp__lt=start).aggregate(amount=Sum('amount'))
+        refunds_until_start = round(refunds_until_start['amount'] or Decimal(0.00), 2)
+
+        deposits_until_start = Deposit.objects.filter(Q(payment_method='m') | Q(payment_method='c'), timestamp__lt=start).aggregate(amount=Sum('amount'))
+        deposits_until_start = round(deposits_until_start['amount'] or Decimal(0.00), 2)
+
+        balances_at_start = deposits_until_start + refunds_until_start - sales_price_until_start
+        balances_at_end = balances_at_start + balances_change
 
         context = {
-            'date_start': 'aloituspvm',
-            'date_end': 'lopetuspvm',
-            'sales_price': sales['sales_price'],
-            'sales_cost': sales['sales_cost'],
-            'refunds': refunds['amount'],
-            'deposits': deposits['amount'],
-            'balance': balance,
+            'date_start': start,
+            'date_end': end,
+            'sales_price': sales_price,
+            'sales_cost': sales_cost,
+            'refunds': refunds,
+            'deposits': deposits,
+            'balances_start': balances_at_start,
+            'balances_end': balances_at_end,
+            'balances_change': balances_change,
         }
 
         return render(request, 'namu/stats.html', context)
