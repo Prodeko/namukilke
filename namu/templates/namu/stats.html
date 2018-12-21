@@ -6,12 +6,12 @@
   <p>Timestamps in UTC</p>
   <form id="date_form" action="{% url "stats" %}" method="get">
     <div class="row">
-      <div class="col s2 offset-s4">
+      <div class="col s3 offset-s3">
         Start date <input type="text" name="start" class="datepicker center-align">
         <br>
         {{ date_start }}
       </div>
-      <div class="col s2">
+      <div class="col s3">
         End date <input type="text" name="end" class="datepicker center-align">
         <br>
         {{ date_end }}
@@ -39,6 +39,10 @@
 
     <div class="col s6 right-align">Change in balances:</div>
     <div class="col s6 left-align">{{ balances_change }}</div>
+  </div>
+  <hr>
+  <div class="row section center-align">
+    <a class="btn waves-effect waves-light" href={% url "index" %}><span>Front page</span></a>
   </div>
 
   <script>

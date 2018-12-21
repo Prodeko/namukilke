@@ -39,6 +39,9 @@
     </form>
   </div>
   <div class="divider"></div>
+  <div class="row section center-align">
+    <a class="btn waves-effect waves-light" href={% url "stats" %}><span>Stats</span></a>
+  </div>
 
   <script>
     var user_data = {{ user_autocomplete|safe }}
