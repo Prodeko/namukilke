@@ -22,17 +22,30 @@
     </div>
   </form>
   <div class="row section">
-    <div class="col s6 right-align">Sales:</div>
+    <div class="col s6 right-align">Gross Sales:</div>
     <div class="col s6 left-align">{{ sales_price }}</div>
 
     <div class="col s6 right-align">Refunds:</div>
     <div class="col s6 left-align">{{ refunds }}</div>
 
+    <div class="col s6 right-align">Net Sales:</div>
+    <div class="col s6 left-align">{{ net_sales }}</div>
+
+    <div class="col s6 right-align">Estimated COGS:</div>
+    <div class="col s6 left-align">{{ sales_cost }}</div>
+
+    <div class="col s6 right-align">Estimated Sales Margin:</div>
+    <div class="col s6 left-align">{{ est_margin }}</div>
+  </div>
+  <div class="row section">
+    <div class="col s6 right-align">Balances {{ date_start }}:</div>
+    <div class="col s6 left-align">{{ balances_start }}</div>
+
     <div class="col s6 right-align">Deposits:</div>
     <div class="col s6 left-align">{{ deposits }}</div>
 
-    <div class="col s6 right-align">Balances {{ date_start }}:</div>
-    <div class="col s6 left-align">{{ balances_start }}</div>
+    <div class="col s6 right-align">Net Sales:</div>
+    <div class="col s6 left-align">{{ net_sales }}</div>
 
     <div class="col s6 right-align">Balances {{ date_end }}:</div>
     <div class="col s6 left-align">{{ balances_end }}</div>

@@ -147,9 +147,6 @@ def statistics(request, **kwargs):
     """Show basic statistics of topups and purchases."""
     if request.method == 'GET':
 
-        # TODO: multiply quantity with price to get restocks. Should store the cost in
-        # restock = Restock.objects.filter(type='s').aggregate(restock_price=Sum('product__price'), restock_cost=Sum('product__cost'))
-
         start = request.GET.get('start', '2018-09-01')
         end = request.GET.get('end', datetime.now().strftime("%Y-%m-%d"))
 
@@ -163,6 +160,11 @@ def statistics(request, **kwargs):
 
         deposits = Deposit.objects.filter(Q(payment_method='m') | Q(payment_method='c'), timestamp__gte=start, timestamp__lt=end).aggregate(amount=Sum('amount'))
         deposits = round(deposits['amount'] or Decimal(0.00), 2)
+
+        net_sales = sales_price - refunds
+
+        # TODO: Margin should be added " + refunds_cost" in order to be accurate but this is currently not stored in the database
+        est_margin = sales_price - refunds - sales_cost
 
         balances_change = deposits + refunds - sales_price
 
@@ -179,12 +181,19 @@ def statistics(request, **kwargs):
         balances_at_start = deposits_until_start + refunds_until_start - sales_price_until_start
         balances_at_end = balances_at_start + balances_change
 
+        # TODO: Inventory values and losses
+        # TODO: multiply quantity with price to get restocks. Should store the cost at the time of restock
+        # restock = Restock.objects.filter(type='s').aggregate(restock_price=Sum('product__price'), restock_cost=Sum('product__cost'))
+
+
         context = {
             'date_start': start,
             'date_end': end,
             'sales_price': sales_price,
             'sales_cost': sales_cost,
             'refunds': refunds,
+            'net_sales': net_sales,
+            'est_margin': est_margin,
             'deposits': deposits,
             'balances_start': balances_at_start,
             'balances_end': balances_at_end,
