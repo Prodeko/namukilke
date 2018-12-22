@@ -7,14 +7,10 @@
   <form id="date_form" action="{% url "stats" %}" method="get">
     <div class="row">
       <div class="col s3 offset-s3">
-        Start date <input type="text" name="start" class="datepicker center-align">
-        <br>
-        {{ date_start }}
+        Start date <input type="text" name="start" class="datepicker center-align" value="{{ date_start }}">
       </div>
       <div class="col s3">
-        End date <input type="text" name="end" class="datepicker center-align">
-        <br>
-        {{ date_end }}
+        End date <input type="text" name="end" class="datepicker center-align" value="{{ date_end }}">
       </div>
     </div>
     <div class="row center-align">
