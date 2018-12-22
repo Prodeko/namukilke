@@ -9,7 +9,7 @@ Käytetään tabletilla ja kiltiskoneella kiltiksen wlanin yli.
 Toistaiseksi tuotekuvien hallintaan ei ole admin käyttöliittymää. Uutta tuotetta luodessa tuotekuva täytyy lisätä palvelimelle kansioon `namu/static/img`, johon Namusetä tarvinnee Webbitiimin apua.
 
 ## Todo-lista
-Päivitetty 7.12.2018
+Päivitetty 22.12.2018
 - [X] Zoomauksen fiksaaminen deposit-sivulla (auto zoom-out tai disable zoom)
 - [ ] Feedback form tuotetoiveita varten etusivulle tai ostamissivulle (Google form tai Django form)
 - [X] Tuotelistauksen järjestäminen käyttäjäkohtaisesti suosituimmat tuotteet ensin
