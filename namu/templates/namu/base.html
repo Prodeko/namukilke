@@ -3,19 +3,17 @@
 
 <html lang="en">
 <head>
+  <title>Namukilke</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800px, user-scalable=no" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/namu.css' %}">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
-
-  <title>Namukilke</title>
 </head>
 <body>
   <main>
-    {% load static %}
     <div class="container section">
       <a href="https://www.fiksuruoka.fi/" target="_blank">
         <img src="{% static 'img/fiksuruoka.png' %}" width="100px"/>
@@ -57,9 +55,11 @@
       </div>
     </div>
   </main>
-  <!--- Show Success/Warning messages.
-  Throw an error modal instead if not enough funds.
-  Use tag 'info' for purchases and display UNDO button. --->
+  {% comment %}
+    Show Success/Warning messages.
+    Throw an error modal instead if not enough funds.
+    Use tag 'info' for purchases and display UNDO button.
+  {% endcomment %}
   <script>
     $(document).ready(function() {
       $("#help-modal").modal({
