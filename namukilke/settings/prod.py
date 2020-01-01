@@ -15,6 +15,10 @@ DATABASES = {
         "PASSWORD": DB_PASSWORD,
         "HOST": "prodeko-postgres.postgres.database.azure.com",
         "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "verify-ca",
+            "sslrootcert": os.environ.get("POSTGRESQL_SSL_CA", ""),
+        },
     }
 }
 
