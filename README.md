@@ -1,14 +1,16 @@
 # Namukilke :candy: :apple:
 
-Python 3.6.7 | Django 2.1.0
+## Lokaaliajo
 
-Pyörii palvelimella virtuaaliympäristön sisällä `source venv/bin/activate`. Aja tämä komento sudolla!
+Aja `pip3 install -r requirements.txt` ja `source .env`. Luo tietokanta ajamalla `python3 manage.py migrate`. Käynnistä sen jälkeen namukilke ajamalla `python3 manage.py runserever`.
 
-Käytetään tabletilla ja kiltiskoneella kiltiksen wlanin yli.
+## Yleistä
+
+Namukilke pyörii Azuressa App Servicenä. Käytetään tabletilla ja kiltiskoneella kiltiksen wlanin yli.
 
 Toistaiseksi tuotekuvien hallintaan ei ole admin käyttöliittymää. Uutta tuotetta luodessa tuotekuva täytyy lisätä palvelimelle kansioon `namu/static/img`, johon Namusetä tarvinnee Webbitiimin apua.
 
-Kuvien lisäämisen jälkeen aja `python3 manage.py collectstatic`. Tarvittaessa käynnistä myös Apache uudestaan.
+Kuvien lisäämisen jälkeen aja `python3 manage.py collectstatic`. Tarvittaessa käynnistä myös App Service uudestaan.
 
 ## Todo-lista
 
