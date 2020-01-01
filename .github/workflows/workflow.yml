@@ -1,0 +1,46 @@
+# This workflow will build and push a Django application to
+# an Azure Web App on every push to the master branch. The
+# workflow is only
+#
+# To configure this workflow:
+#
+# 1. Set up a secret in your repository named AZURE_CREDENTIALS
+#    with the value of your Azure publish profile.
+
+env:
+  AZURE_WEBAPP_NAME: namukilke
+  AZURE_WEBAPP_PACKAGE_PATH: "."
+  PYTHON_VERSION: "3.7"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      # Setup python
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python3.7 -m venv antenv
+          source antenv/bin/activate
+          pip3.7 install -r requirements.txt
+
+      # Deploy web app
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
