@@ -5,3 +5,4 @@ db.sqlite3
 variables.txt
 /venv*
 namu/collected-static
+.DS_Store
