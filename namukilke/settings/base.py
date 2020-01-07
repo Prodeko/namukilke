@@ -6,8 +6,6 @@ SECRET_KEY = os.getenv("SECRET_KEY", "keep_this_secret_in_prod")
 
 ALLOWED_HOSTS = []
 
-# Application definition
-
 INSTALLED_APPS = [
     'namu.apps.NamuConfig',
     'import_export',
@@ -50,18 +48,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'namukilke.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -70,9 +60,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'namu', 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'namu', 'static')
-]
+MEDIA_ROOT = os.path.join(BASE_DIR, "namukilke/media")
+MEDIA_URL = "/media/"
+STATIC_ROOT = os.path.join(BASE_DIR, "namukilke/static")
+STATIC_URL = "/static/"

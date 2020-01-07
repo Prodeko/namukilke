@@ -25,7 +25,14 @@ DATABASES = {
 
 MIDDLEWARE += ("whitenoise.middleware.WhiteNoiseMiddleware",)
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STORAGE_KEY = os.getenv("STORAGE_KEY", "keep_this_secret_in_prod")
+
+CDN_URL = "static.prodeko.org"
+AZURE_CUSTOM_DOMAIN = CDN_URL
+MEDIA_LOCATION = "media"
+
+DEFAULT_FILE_STORAGE = "namukilke.azure_backend.AzureMediaStorage"
+MEDIA_URL = f"https://{CDN_URL}/{MEDIA_LOCATION}/"
 
 LOGGING = {
     "version": 1,
