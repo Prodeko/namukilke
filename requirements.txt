@@ -5,3 +5,4 @@ psycopg2-binary==2.8.4
 whitenoise==5.0.1
 Pillow==7.0.0
 azure==4.0.0
+sentry-sdk==0.14.0
