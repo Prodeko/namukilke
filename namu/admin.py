@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Namuseta, User, Product, Transaction, Deposit, Restock
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+
+from .models import Deposit, Namuseta, Product, Restock, Transaction, User
 
 # Register your models here.
 
@@ -13,12 +14,12 @@ admin.site.register(Restock)
 
 
 class UserResource(resources.ModelResource):
-
     class Meta:
         model = User
+
 
 @admin.register(User)
 class UserAdmin(ImportExportModelAdmin):
     resource_class = UserResource
-    from_encoding = 'utf-8'
-    to_encoding = 'utf-8'
+    from_encoding = "utf-8"
+    to_encoding = "utf-8"
