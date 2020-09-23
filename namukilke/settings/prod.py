@@ -30,7 +30,6 @@ DATABASES = {
     }
 }
 
-
 MIDDLEWARE += ("whitenoise.middleware.WhiteNoiseMiddleware",)
 
 STORAGE_KEY = os.getenv("STORAGE_KEY", "keep_this_secret_in_prod")
