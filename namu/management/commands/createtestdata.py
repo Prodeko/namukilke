@@ -13,6 +13,9 @@ from faker import Faker
 # Autocomplete for this doesn't work for me (mUusitalo) in VSCode as of 23.1.2023
 fake = Faker(locale=["fi_FI", "en_US"])
 
+# Appending this to all fake data as a backup just in case this command gets accidentally used in production
+DEV_POSTFIX = "@DEV"
+
 class Command(BaseCommand):
     help = "Adds some data to the database. Only use in development!"
     
@@ -33,22 +36,22 @@ class Command(BaseCommand):
         def generate_data():
             first_name = fake.first_name()
             last_name = fake.last_name()
-            name = f"{first_name} {last_name}"
-            mobilepay = fake.unique.phone_number()
-            contact = f"{first_name}.{last_name}@{fake.domain_name()}"
+            name = f"{first_name} {last_name}" + DEV_POSTFIX
+            mobilepay = fake.unique.phone_number() + DEV_POSTFIX
+            contact = f"{first_name}.{last_name}@{fake.domain_name()}" + DEV_POSTFIX
             return {"name": name, "mobilepay": mobilepay, "contact": contact,}
         self._create_rows(Namuseta, generate_data, count)
 
     def _create_user_rows(self, count: int):
         def generate_data():
-            name = fake.name()
-            is_active=fake.boolean(chance_of_getting_true=50)
+            name = fake.name() + DEV_POSTFIX
+            is_active = fake.boolean(chance_of_getting_true=50)
             return {"name": name, "is_active": is_active,}
         self._create_rows(User, generate_data, count)
 
     def _create_product_rows(self, count: int):
         def generate_data():
-            name = fake.word()
+            name = fake.word() + DEV_POSTFIX
             category = random.choice([category[0] for category in Product.CATEGORY_OPTIONS])
             price = random.uniform(0.1, 5.0)
             cost = price + random.uniform(-0.1, 0.1)
@@ -124,8 +127,8 @@ class Command(BaseCommand):
     def _create_feedback_rows(self, count: int):
         def generate_data():
             timestamp = fake.date_between()
-            title = fake.catch_phrase()
-            message = fake.paragraph(nb_sentences=3)
+            title = fake.catch_phrase() + DEV_POSTFIX
+            message = fake.paragraph(nb_sentences=3) + DEV_POSTFIX
             return {
                 "timestamp": timestamp,
                 "title": title,
