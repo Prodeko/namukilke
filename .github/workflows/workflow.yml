@@ -10,7 +10,7 @@
 env:
   AZURE_WEBAPP_NAME: namukilke
   AZURE_WEBAPP_PACKAGE_PATH: "."
-  PYTHON_VERSION: "3.7"
+  PYTHON_VERSION: "3.11"
 
 on:
   push:
@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt install libpq-dev
-          python3.7 -m venv antenv
+          python${{ env.PYTHON_VERSION }} -m venv antenv
           source antenv/bin/activate
-          pip3.7 install -r requirements.txt
+          pip${{ env.PYTHON_VERSION }} install -r requirements.txt
 
       # Deploy web app
       - name: Deploy to Azure App Service
