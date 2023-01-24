@@ -137,16 +137,6 @@ class Command(BaseCommand):
 
         self._create_rows(Feedback, generate_data, count)
 
-    def _clear_database_dangerous(self):
-        """Clears the whole database."""
-        Feedback.objects.all().delete()
-        Transaction.objects.all().delete()
-        Restock.objects.all().delete()
-        Product.objects.all().delete()
-        Deposit.objects.all().delete()
-        User.objects.all().delete()
-        Namuseta.objects.all().delete()
-
     def _create_fake_rows(self, **options):
         self._create_namuseta_rows(options["namuseta"])
         self._create_user_rows(options["user"])
@@ -157,14 +147,10 @@ class Command(BaseCommand):
         self._create_feedback_rows(options["feedback"])
         
     def handle(self, **options):
-        confirmation_ok = input("""This command will DELETE ALL DATA from the database. This is IRREVERSIBLE. Type "eiookettu" to proceed, leave blank to cancel: """) == "eiookettu"
+        confirmation_ok = input("""This command will write fake rows to the database. This is IRREVERSIBLE. Type "eiookettu" to proceed, leave blank to cancel: """) == "eiookettu"
         if not confirmation_ok:
             raise CommandError("Canceled")
 
-        print("Deleting all database rows")
-        self._clear_database_dangerous()
-        print("Cleared database")
-        
         print("Creating fake data")
         self._create_fake_rows(**options)
         print("Done")
