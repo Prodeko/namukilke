@@ -5,7 +5,10 @@
 1. Luo virtualenv `python3 -m venv venv` ja käynnistä se `sourcec venv/bin/activate`
 2. Aja `pip3 install -r requirements.txt` ja `source .env`.
 3. Luo tietokanta ajamalla `python3 manage.py migrate`.
-4. Käynnistä sen jälkeen namukilke ajamalla `python3 manage.py runserever`.
+4. Luo kantaan tekaistua dataa ajamalla `python3 manage.py createtestdata`.
+5. Käynnistä sen jälkeen namukilke ajamalla `python3 manage.py runserver`.
+
+Mikäli devkanta täytyy jostain syystä resetoida, se tapahtuu poistamalla tiedosto `namukilke/db.sqlite3` ja toistamalla kohdat 3 ja 4.
 
 ## Yleistä
 
