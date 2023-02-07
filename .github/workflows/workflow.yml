@@ -1,5 +1,5 @@
 # This workflow will build and push a Django application to
-# an Azure Web App on every push to the master branch. The
+# an Azure Web App on every push to the production branch. The
 # workflow is only
 #
 # To configure this workflow:
@@ -15,7 +15,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - production
 
 jobs:
   build-and-deploy:
