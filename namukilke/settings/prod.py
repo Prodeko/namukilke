@@ -12,20 +12,24 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["namukilke.azurewebsites.net", "namu.prodeko.org", "127.0.0.1"]
 
+DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_HOST = os.environ.get("DB_HOST")
+DB_PORT = os.environ.get("DB_PORT")
+SSL_ROOT_CERT = os.environ.get("POSTGRESQL_SSL_CA", "")
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "namukilke",
+        "NAME": DB_NAME,
         "USER": DB_USER,
         "PASSWORD": DB_PASSWORD,
-        "HOST": "prodeko-postgres-new.postgres.database.azure.com",
-        "PORT": "5432",
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
         "OPTIONS": {
             "sslmode": "verify-ca",
-            "sslrootcert": os.environ.get("POSTGRESQL_SSL_CA", ""),
+            "sslrootcert": SSL_ROOT_CERT,
         },
     }
 }
