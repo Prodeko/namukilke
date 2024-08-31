@@ -38,6 +38,14 @@
             </label>
           </p>
         </div>
+        <div class="input-field col s12">
+          <p>
+            <label>
+              <input class="with-gap" name="payment_method" type="radio" value="r" checked />
+              <span>Revolut</span>
+            </label>
+          </p>
+        </div>
       </div>
       <div class="row">
         <div class="input-field">
@@ -89,6 +97,9 @@
         var mp = "Number: {{ namuseta.mobilepay }}"
         $("#mobilepay").html(mp)
         $("#deposit-modal-text").html("Send money with MobilePay to the above number.")
+      } else if (paymentMethod === "r") {
+        $("#modal-pmethod").html("Revolut");
+        $("#mobilepay").html('<img src="/static/images/revolut.png" alt="revolut.me/iiroukkonen"><p>Send money in Revolut to @iiroukkonen.<br/><a>revolut.me/iiroukkonen</a><br/>Please put "Namukilke" in the payment message.</p>')
       }
       $("#modal-amount").html(amount);
       $('#deposit-modal').modal();
