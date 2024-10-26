@@ -1,6 +1,6 @@
 # Namukilke :candy: :apple:
 
-## Lokaaliajo
+## Lokaaliajo 
 
 1. Luo virtualenv `python3 -m venv venv` ja käynnistä se `sourcec venv/bin/activate`
 2. Aja `pip3 install -r requirements.txt` ja `source .env`.
